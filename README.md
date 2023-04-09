@@ -1,0 +1,2 @@
+# Godspeed
+An idle game.
