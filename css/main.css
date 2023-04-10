@@ -1,0 +1,15 @@
+* {
+    margin: auto;
+    /* max-width: 90%;
+    max-height: 90%; */
+    /* overflow: hidden;     */
+}
+
+#gameArea {
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    /* height: 100%;
+    width: 100%; */
+    flex-direction: column;
+}
