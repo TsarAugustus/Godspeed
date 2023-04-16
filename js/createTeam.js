@@ -1,4 +1,4 @@
-function createTeam(teamsToGenerate) {
+function createTeam(teamsToGenerate, driversPerTeam) {
     let teamArray = [];
     for(let i=0; i<teamsToGenerate; i++) {
         //Creates a new team
@@ -32,16 +32,7 @@ function createTeam(teamsToGenerate) {
                 name: `CREW ${i}`,
                 skill: getRandomNumber(0, 10)
             },
-            driver: {
-                name: `DRIVER ${i}`,
-                skill: getRandomNumber(0, 10),
-                car: {
-                    name: `CAR ${i}`,
-                    skill: getRandomNumber(0, 10),
-                    straightSkill: getRandomNumber(0, 10),
-                    cornerSkill: getRandomNumber(0, 10)
-                }
-            }
+            driver: createDriver(driversPerTeam, i)
             //Other members to generate
             //IT
             //PR
@@ -51,6 +42,28 @@ function createTeam(teamsToGenerate) {
         teamArray.push(newTeam)
     }
     return teamArray;
+}
+
+function createDriver(driversPerTeam, teamNumber) {
+    let drivers = [];
+    for(let i=0; i<driversPerTeam; i++) {
+        // console.log(`${teamNumber} - ${i}`)
+        let newDriver =  {
+            name: `TEAM: ${teamNumber} - DRIVER ${i}`,
+            driverNumber: i,
+            skill: getRandomNumber(0, 10),
+            team: teamNumber,
+            car: {
+                name: `CAR ${i}`,
+                skill: getRandomNumber(0, 10),
+                straightSkill: getRandomNumber(0, 10),
+                cornerSkill: getRandomNumber(0, 10)
+            }
+        };
+        drivers.push(newDriver)
+    }
+
+    return drivers;
 }
 
 function getRandomNumber(min, max) {
