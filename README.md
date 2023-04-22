@@ -13,7 +13,7 @@ CEOs will attempt to buy a team, and with their money, build the team from the g
 	- Vehicles
 	- Drivers
 
-#####Features to add:
+##### Features to add:
 **Faculty**
 • Team Logistics Specialists
 	- These specialists allow you to get to the track on time, economically. 
@@ -26,6 +26,6 @@ CEOs will attempt to buy a team, and with their money, build the team from the g
 	- Tracks should be raced at different times of day, to allow more 'faults' to occur
 
 
-#####Bugs and Issues to resolve:
+##### Bugs and Issues to resolve:
 • Building the path for the track should be less random and have a level of realism involved
 
