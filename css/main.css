@@ -2,7 +2,7 @@
     margin: auto;
     /* max-width: 90%;
     max-height: 90%; */
-    /* overflow: hidden;     */
+    /* overflow: ;     */
 }
 
 #gameArea {
@@ -11,5 +11,39 @@
     border: 1px solid black;
     /* height: 100%;
     width: 100%; */
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.driverList {
+    /* min-width: 10%; */
+    display: flex;
     flex-direction: column;
+    border: 1px solid black;
+}
+
+#info {
+    min-width: 100%;
+    text-align: center;
+}
+
+.FIRST {
+    color: gold;
+    text-decoration: underline;
+    
+}
+
+.SECOND {
+    color: silver;
+    text-decoration: underline;
+}
+
+.THIRD {
+    color: chocolate;
+    text-decoration: underline;
+}
+
+.POINTS {
+    color: green;
+    text-decoration: underline;
 }

@@ -1,96 +1,126 @@
+let multipliers = {
+    1: 10,
+    2: 20,
+    3: 30,
+    4: 40,
+    5: 50
+}
+
 function createCircuit(circuitsToGenerate) {
-    //Season circuit array
+    console.log('Creating Circuits', circuitsToGenerate);
     let circuitArray = [];
-    for(let i=0; i< circuitsToGenerate; i++) {
-        //Randomly generate corners/straights
-        //Straights are always less than corners
-        let corners = Math.round(getRandomNumber(4, 30));
-        let straights = Math.round(getRandomNumber(2, Math.round(corners / 2)));
 
-        //Container used for counting in loops
-        let cornerCount = 0;
-        let straightCount = 0;
-
-        //newCircuit object
+    for(let i=0; i<circuitsToGenerate; i++) {
+        let cornerAmt = getRandomNumber(1, 10);
+        let straightAmt = getRandomNumber(1, cornerAmt);
         let newCircuit = {
-            name: `Circuit ${i}`,
-            corners: [],
-            straights: [],
-            path: []
-        }
-        
-        //Go through each corner, give it a name and length/width (TODO: USE LENGTH/WIDTH)
-        //Skill is random
-        for(let i=0; i<=corners; i++) {
-            let newCorner = {
-                cornerName: `Corner ${i}`,
-                type: 'Corner',
-                length: Math.round(getRandomNumber(1, 100)),
-                width: Math.round(getRandomNumber(1, 20)),
-                skill: Math.round(getRandomNumber(0, 10))
-            }
-            newCircuit.corners.push(newCorner)
-        }
-        //Go through each straight, give it a name and length/width (TODO: USE LENGTH/WIDTH)
-        //Skill is random
-        for(let i=0; i<=straights; i++) {
-            let newStraight = {
-                straightName: `Straight ${i}`,
-                type: 'Straight',
-                length: Math.round(getRandomNumber(1, 100)),
-                width: Math.round(getRandomNumber(1, 20)),
-                skill: Math.round(getRandomNumber(0, 10))
-            }
-            newCircuit.straights.push(newStraight);
+            name: `Circuit ${i + 1}`,
+            laps: getRandomNumber(0, 10),
+            lapLength: 0,
+            raceLength: 0,
+            multiplier: 1,
+            corners: cornerAmt,
+            straights: straightAmt,
+            path: definePath(cornerAmt, straightAmt)
         }
 
-        //Go through each corner/straight, add it to the 'path'
-        for(let i=0; i<corners + straights; i++) {
-            //Generate 0=corner, 1=straight
-            //TODO: GENERATE BETTER
-            let randomPath = Math.round(getRandomNumber(0, 1));
-
-            //CORNER
-            if(randomPath === 0) {
-                if(cornerCount < newCircuit.corners.length) {
-                    addToPath('corner')
-                } else if(cornerCount >= newCircuit.straights.length && straightCount < newCircuit.straights.length) {
-                    //If there is max amount of corners, add a straight if it isn't at max wither
-                    addToPath('straight')
-                }
-            } 
-            //STRAIGHT
-            else if(randomPath === 1) {
-                if(straightCount < newCircuit.straights.length) {
-                    addToPath('straight');
-                } else if (straightCount >= newCircuit.straights.length && cornerCount < newCircuit.corners.length) {
-                    //If there is max amount of straights, make a corner if it isn't at max either
-                    addToPath('corner')
-                }
-            }
-        }
-
-        //Pushed corner/straight to the path
-        //TODO: Reduce this
-        function addToPath(pathType) {
-            // console.log(pathType);
-            if(pathType === 'corner') {
-                newCircuit.path.push(newCircuit.corners[cornerCount]);
-                cornerCount++
-            } else if(pathType === 'straight') {
-                newCircuit.path.push(newCircuit.straights[straightCount]);
-                straightCount++;
-            }
-        }
+        newCircuit.multiplier = refineCircuitMultiplier(newCircuit);
+        newCircuit.lapLength = getLapLength(newCircuit);
+        newCircuit.raceLength = newCircuit.lapLength * newCircuit.laps;
 
         circuitArray.push(newCircuit);
     }
-    
-    return circuitArray;
+    return circuitArray
+}
+
+//This function is almost the exact same as refineCircuitMultiplier
+//This should be made redundant
+function getLapLength(circuit) {
+    let pathLength = 0;
+
+    for(let ii=0; ii<circuit.path.length; ii++) {
+        pathLength += circuit.path[ii].length;
+    }
+
+    return pathLength
+}
+
+function refineCircuitMultiplier(circuit) {
+    let pathLength = 0;
+    let pathMultiplier = 0; 
+
+    for(let i=0; i<circuit.laps; i++) {
+        for(let ii=0; ii<circuit.path.length; ii++) {
+            pathLength += circuit.path[ii].length;
+        }
+    }
+
+    for(let i=0; i<Object.keys(multipliers).length; i++) {
+        if(pathLength > multipliers[i+1]) {
+            pathMultiplier = i + 1
+        }
+    }
+
+    return pathMultiplier;    
+}
+
+function definePath(corners, straights) {
+    let pathLength = corners + straights;
+    let cornerCount = 0;
+    let straightCount = 0;
+
+    let pathArray = [];
+
+    for(let i=0; i<pathLength; i++) {
+        let thisPath = getRandomNumber(0, 1);
+        
+        //0 === Corner
+        if(thisPath === 0) {
+            if(cornerCount < corners) {
+                pathArray.push(createCorner());
+                cornerCount++;
+            } else {
+                pathArray.push(createStraight());
+                straightCount++;
+            }
+        //1 === Straight
+        } else {
+            if(straightCount < straights) {
+                pathArray.push(createStraight());
+                straightCount++;
+            } else {
+                pathArray.push(createCorner());
+                cornerCount++
+            }
+        }
+    }
+    return pathArray;
+}
+
+function createCorner() {
+    let thisCorner = {
+        type: 'Corner',
+        length: getRandomNumber(1, 10),
+        //Skill is very broad at the moment, should be refined
+        skill: getRandomNumber(1, 10)
+    }
+
+    return thisCorner;
+}
+
+function createStraight() {
+    let thisStraight = {
+        type: 'Straight',
+        length: getRandomNumber(1, 10),
+        //Skill is very broad at the moment, should be refined
+        skill: getRandomNumber(1, 10)
+    }
+
+    return thisStraight;
 }
 
 function getRandomNumber(min, max) {
-    return Math.random() * (max - min) + min;
+    return Math.round(Math.random() * (max - min) + min);
 }
 
-export { createCircuit }
+export { createCircuit };
