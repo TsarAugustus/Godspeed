@@ -15,6 +15,16 @@
     flex-wrap: wrap;
 }
 
+.season {
+    display: flex;
+    width: 100%;
+    border: 1px solid black;
+}
+
+.circuitResult {
+    border: 1px solid black
+}
+
 .driverList {
     /* min-width: 10%; */
     display: flex;

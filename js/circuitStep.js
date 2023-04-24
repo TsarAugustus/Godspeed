@@ -4,59 +4,81 @@ function circuitStep(teams, circuit) {
     // console.log('Starting Circuit Step');
 
     let circuitTeamResult = [];
-    let circuitDriverResult = [];
+    let circuitResult = [];
     for(let i=0; i<teams.length; i++) {
         let result = teamStep(teams[i], circuit);
-        
+
         let teamResult = {
             team: teams[i],
-            result: result,
+            drivers: result,
+            // result: result,
             points: 0
         }
-        
-        
-        circuitDriverResult.push(result);
+        // console.log(result)
         circuitTeamResult.push(teamResult);
+        // circuitTeamResult.push(teamResult);
     }
 
-    circuitDriverResult.sort(function(a, b) {
+    for(let i=0; i<circuitTeamResult.length; i++) {
+        let thisTeam = circuitTeamResult[i];
+        for(let ii=0; ii<thisTeam.length; ii++) {
+            circuitDriverResult.push(thisTeam[ii]);
+        }
+    }
+
+    for(let i=0; i<circuitTeamResult.length; i++) {
+        let thisTeam = circuitTeamResult[i];
+        for(let ii=0; ii<thisTeam.drivers.length; ii++){
+            let thisDriver = thisTeam.drivers[ii];
+            circuitResult.push(thisDriver);
+        }
+    }
+
+    circuitResult = circuitResult.sort(function(a, b) {
         return b.result - a.result;
     });
-
-    for(let i=0; i<circuitDriverResult.length; i++) {
-        circuitDriverResult[i].points = Object.values(pointsTable)[i];
+    
+    for(let i=0; i<circuitResult.length; i++) {
+        if(undefined !==Object.values(pointsTable)[i])
+            circuitResult[i].points = Object.values(pointsTable)[i];
     }
 
     return {
-        teamResult: circuitTeamResult,
-        driverResult: circuitDriverResult
-    };
+        circuitTeamResult,
+        circuitResult
+    }
 }
 
-function teamStep(team, circuit) {
-    let driverResult = {};
+function teamStep(team, circuit) { //BUG IS HERE
+    let teamResult = [];
     for(let i=0; i<team.drivers.length; i++) {
         let driverStepResult = driverStep(team.drivers[i], circuit);
-        let result = {
-            driver: team.drivers[i],
+        
+        let driverResult = {
+            driver: driverStepResult.driver,
             result: 0,
             points: 0
         }
-
-        for(let i=0; i<driverStepResult.length; i++) {
-            result.result += driverStepResult[i].total;
+        
+        for(let ii=0; ii<driverStepResult.result.length; ii++) {
+            driverResult.result += driverStepResult.result[ii].total;
         }
 
-        driverResult = result;
+        teamResult.push(driverResult);
     }
 
-    return driverResult;
+    return teamResult;
+
 }
 
 function driverStep(driver, circuit) {
-    let lapTotal = [];
+    let lapTotal = {
+        driver: driver,
+        result: []
+    };
+
     for(let i=0; i<circuit.laps; i++) {
-        lapTotal.push(lapStep(driver, circuit));
+        lapTotal.result.push(lapStep(driver, circuit));
     }
 
     return lapTotal;

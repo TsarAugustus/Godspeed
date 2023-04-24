@@ -46,6 +46,7 @@ function assemblePaddock(initPaddock) {
             if(seasonTeams[i].drivers.length === 0) {
                 let driverBuy = attemptDriverBuy(seasonTeams[i], driverPool, initPaddock.driverLimit);
                 for(let iii=0; iii<driverBuy.length; iii++) {
+                    driverBuy[iii].team = seasonTeams[i]
                     driverPool = driverPool.filter(function(driverPoolDriver) {
                         return driverPoolDriver.name !== driverBuy[iii].name
                     })
@@ -64,29 +65,38 @@ function assemblePaddock(initPaddock) {
     }
 
     let filteredTeams = [];
-
     //Filter through the teams, remove any that are missing faculty or drivers
     for(let i=0; i<seasonTeams.length; i++) {
-        let teamPassArray = [];
-
+        let teamPassValue = 0;
+        
         //Filter if the team has a driver first
         if(seasonTeams[i].drivers.length > 0) {
             //Then filter if the team has enough faculty
             for(let ii=0; ii<seasonTeams[i].faculty.length; ii++) {
                 if(undefined !== seasonTeams[i].faculty[ii].name) {
-                    teamPassArray.push(true);
+                    teamPassValue++;
                 }
             }
         }        
         
-        if(seasonTeams[i].faculty.length === teamPassArray.length) {
-            for(let ii=0; ii<seasonTeams[i].drivers; ii++) {
+        if(teamPassValue === seasonTeams[i].faculty.length) {
+            filteredTeams.push(seasonTeams[i])
+            for(let ii=0; ii<seasonTeams[i].drivers.length; ii++) {
                 seasonTeams[i].drivers[ii].vehicle = seasonTeams[i].faculty[4].vehicle
             }
-            filteredTeams.push(seasonTeams[i])
         }
     }
-
+    
+    //DEBUGGING PURPOSES
+    // let driversNum = 0; 
+    // for(let i=0; i<filteredTeams.length; i++) {
+    //     for(let ii=0; ii<filteredTeams[i].drivers.length; ii++) {
+    //         driversNum++;
+    //     }
+    // }
+    // console.log('TEAMS: ', filteredTeams.length, 'DRIVERS', driversNum);
+    // console.log(filteredTeams)
+    
     return filteredTeams;
 }
 
