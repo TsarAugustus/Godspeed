@@ -64,12 +64,16 @@ function assemblePaddock(initPaddock) {
     //Filter through the teams, remove any that are missing faculty or drivers
     for(let i=0; i<seasonTeams.length; i++) {
         let teamPassArray = [];
-        for(let ii=0; ii<seasonTeams[i].faculty.length; ii++) {
-            if(undefined !== seasonTeams[i].faculty[ii].name) {
-                teamPassArray.push(true);
 
+        //Filter if the team has a driver first
+        if(seasonTeams[i].drivers.length > 0) {
+            //Then filter if the team has enough faculty
+            for(let ii=0; ii<seasonTeams[i].faculty.length; ii++) {
+                if(undefined !== seasonTeams[i].faculty[ii].name) {
+                    teamPassArray.push(true);
+                }
             }
-        }
+        }        
         
         if(seasonTeams[i].faculty.length === teamPassArray.length) {
             filteredTeams.push(seasonTeams[i])
@@ -90,9 +94,9 @@ function attemptDriverBuy(team, driverPool, driverLimit) {
             } else if(driverPool[ii].totalSkill > potentialDriver.totalSkill && team.faculty[0].money >= driverPool[ii].cost) {
                 potentialDriver = driverPool[ii];
             }
-                driverPool = driverPool.filter(function(driver) {
-                    return driver.name !== potentialDriver.name
-                })
+            driverPool = driverPool.filter(function(driver) {
+                return driver.name !== potentialDriver.name
+            })
         }
         if(undefined !== potentialDriver.name)
             drivers.push(potentialDriver);

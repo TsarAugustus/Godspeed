@@ -55,8 +55,12 @@ function generateSeason(initPaddock, seasonNumber) {
         if(i === 0) {
             seasonPaddock = assemblePaddock(initPaddock);
             console.log(seasonPaddock)
+            
+            //Debugging purposes
+            for(let ii=0; ii<seasonPaddock.length; ii++) {
+                // console.log(seasonPaddock[ii].drivers, seasonPaddock)
+            }
         }
-        // seasonResult.push(circuitStep(initPaddock), i);
     }
 
     return seasonResult;
