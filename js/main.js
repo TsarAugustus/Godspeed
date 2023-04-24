@@ -66,10 +66,6 @@ function generateSeason(initPaddock, seasonNumber) {
     return seasonResult;
 }
 
-function getRandomNumber(min, max) {
-    return Math.round(Math.random() * (max - min) + min);
-}
-
 
 //Create the game area 
 function createGameArea() {

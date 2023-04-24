@@ -1,3 +1,7 @@
+import { attemptCEOTeamBuy } from "./attemptCEOTeamBuy.js";
+import { attemptDriverBuy } from "./attemptDriverBuy.js";
+import { attemptFacultyBuy } from "./attemptFacultyBuy.js";
+
 function assemblePaddock(initPaddock) {
     console.log('Assembling First Paddock');
 
@@ -83,79 +87,6 @@ function assemblePaddock(initPaddock) {
     return filteredTeams;
 }
 
-function attemptDriverBuy(team, driverPool, driverLimit) {
-    let drivers = [];
 
-    for(let i=0; i<driverLimit; i++) {
-        let potentialDriver = {};
-        for(let ii=0; ii<driverPool.length; ii++) {
-            if(undefined === potentialDriver.name && team.faculty[0].money >= driverPool[ii].cost) {
-                potentialDriver = driverPool[ii];
-            } else if(driverPool[ii].totalSkill > potentialDriver.totalSkill && team.faculty[0].money >= driverPool[ii].cost) {
-                potentialDriver = driverPool[ii];
-            }
-            driverPool = driverPool.filter(function(driver) {
-                return driver.name !== potentialDriver.name
-            })
-        }
-        if(undefined !== potentialDriver.name)
-            drivers.push(potentialDriver);
-    }
-
-    return drivers;
-}
-
-function attemptFacultyBuy(team, facultyNumber, facultyPool) {
-    let memberToReturn = {};
-    let memberPool = [];
-    for(let i=0; i<facultyPool.length; i++) {
-        if(facultyPool[i].type.toLowerCase() === team.faculty[facultyNumber].type && team.faculty[0].money >= facultyPool[i].cost) {
-            memberPool.push(facultyPool[i]);
-        }
-    }
-
-    for(let i=0; i<memberPool.length; i++) {
-        if(undefined === memberToReturn.name) {
-            memberToReturn = memberPool[i];
-        } else if (memberPool[i].level > memberToReturn.level) {
-            memberToReturn = memberPool[i];
-        }
-    }
-
-    return memberToReturn;
-}
-
-function attemptCEOTeamBuy(teamPool, ceo) {
-    let teamAttempt = {};
-
-    for(let i=0; i<teamPool.length; i++) {
-        let teamEval = evaluateTeam(teamAttempt, ceo, teamPool[i]);
-        if(Object.keys(teamEval).length > 0) {
-            teamAttempt = teamEval;
-        }
-    }
-
-    return teamAttempt;
-}
-
-function evaluateTeam(teamAttempt, ceo, teamInPool) {
-    let potentialTeam = {}
-
-    if(Object.values(teamAttempt).length === 0 && ceo.money >= teamInPool.money) {
-        // console.log('First Team Offer');
-        potentialTeam = teamInPool;
-        potentialTeam.faculty[0] = ceo;
-    } else if(Object.values(teamAttempt).length > 0 && !teamInPool.faculty[0] && ceo.money >= teamInPool.money && teamInPool.prestige > teamAttempt.prestige) {
-        // console.log('Another Team Offer');
-        potentialTeam = teamInPool;
-        potentialTeam.faculty[0] = ceo;
-    } else if(ceo.money < teamInPool.money) {
-        // console.log('Team Costs too much')
-    } else {
-        // console.log('not buying team')
-    }
-
-    return potentialTeam;
-}
 
 export { assemblePaddock };
