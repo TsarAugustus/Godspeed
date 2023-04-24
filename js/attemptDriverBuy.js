@@ -13,6 +13,7 @@ function attemptDriverBuy(team, driverPool, driverLimit) {
                 return driver.name !== potentialDriver.name
             })
         }
+
         if(undefined !== potentialDriver.name)
             drivers.push(potentialDriver);
     }

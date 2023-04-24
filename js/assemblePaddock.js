@@ -80,6 +80,9 @@ function assemblePaddock(initPaddock) {
         }        
         
         if(seasonTeams[i].faculty.length === teamPassArray.length) {
+            for(let ii=0; ii<seasonTeams[i].drivers; ii++) {
+                seasonTeams[i].drivers[ii].vehicle = seasonTeams[i].faculty[4].vehicle
+            }
             filteredTeams.push(seasonTeams[i])
         }
     }

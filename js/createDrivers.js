@@ -10,6 +10,7 @@ function createDrivers(driversToGenerate, teams) {
             cornerSkill: getRandomNumber(0, 10),
             straightSkill: getRandomNumber(0, 10),
             totalSkill: 0,
+            totalPoints: 0,
             cost: getRandomNumber(1, 10),
             car: []
         }
