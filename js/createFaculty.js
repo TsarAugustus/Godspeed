@@ -2,11 +2,9 @@ function createFaculty(facultyToGenerate, teams) {
     console.log('Creating Faculty', facultyToGenerate);
 
     let facultyArray = [];
-    let facultyTypes = Object.keys(teams[0].faculty);
-
     for(let i=0; i<facultyToGenerate; i++) {
-        for(let ii=0; ii<facultyTypes.length; ii++){
-            facultyArray.push(createMember(facultyTypes[ii], i))
+        for(let ii=0; ii<teams[0].faculty.length; ii++) {
+            facultyArray.push(createMember(teams[0].faculty[ii].type, i))
         }
     }
     return facultyArray;
@@ -22,7 +20,7 @@ function createMember(memberToGenerate, teamNum) {
 }
 
 function generateCeo(teamNum) {
-    let ceoMoney = getRandomNumber(0, 10)
+    let ceoMoney = getRandomNumber(0, 10);
     let ceoExpectation = getRandomNumber(0, ceoMoney);
     return {
         name: `CEO ${teamNum + 1}`,
@@ -36,7 +34,8 @@ function generatePrincipal(teamNum) {
     return {
         name: `Principal ${teamNum + 1}`,
         level: getRandomNumber(0, 10),
-        type: 'PRINCIPAL'
+        type: 'PRINCIPAL',
+        cost: getRandomNumber(0, 10)
     }
 }
 
@@ -44,7 +43,8 @@ function generateStrategist(teamNum) {
     return {
         name: `Strategist ${teamNum + 1}`,
         level: getRandomNumber(0, 10),
-        type: 'STRATEGIST'
+        type: 'STRATEGIST',
+        cost: getRandomNumber(0, 10)
     }
 }
 
@@ -52,7 +52,8 @@ function generateMechanic(teamNum) {
     return {
         name: `Mechanic ${teamNum + 1}`,
         level: getRandomNumber(0, 10),
-        type: 'MECHANIC'
+        type: 'MECHANIC',
+        cost: getRandomNumber(0, 10)
     }
 }
 
@@ -60,21 +61,26 @@ function generateEngineer(teamNum) {
     let creativity = getRandomNumber(0, 10)
     let conventionalDesign = getRandomNumber(0, creativity);
     
-    return {
+    let thisEngineer = {
         name: `Engineer ${teamNum + 1}`,
         level: getRandomNumber(0, 10),
         type: 'ENGINEER',
         costSaving: getRandomNumber(0, 10),
         conventionalDesign: conventionalDesign, //if low, then they design a conventional car | if high, not conventional and has risks
-        faultChance: getRandomNumber(conventionalDesign, 10)
+        faultChance: getRandomNumber(conventionalDesign, 10),
+        cost: getRandomNumber(0, 10),
+        vehicle: {}
     }
+
+    return thisEngineer;
 }
 
 function generateCrew(teamNum) {
     return {
         name: `Crew ${teamNum + 1}`,
         level: getRandomNumber(0, 10),
-        type: 'CREW'
+        type: 'CREW',
+        cost: getRandomNumber(0, 10)
     }
 }
 

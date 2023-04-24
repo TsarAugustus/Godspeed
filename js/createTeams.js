@@ -7,26 +7,21 @@ function createTeams(teamsToGenerate) {
             name: `Team ${i+1}`,
             money: getRandomNumber(0, 10),
             prestige: getRandomNumber(0, 10),
-            faculty: {
-                ceo: {
-
-                },
-                principal: {
-    
-                },
-                strategist: {
-    
-                },
-                mechanic: {
-    
-                },
-                engineer: {
-    
-                },
-                crew: {
-    
+            faculty: [
+                {
+                    type: 'ceo'
+                }, {
+                    type: 'principal'
+                }, {
+                    type: 'strategist'
+                }, {
+                    type: 'mechanic'
+                }, {
+                    type: 'engineer'
+                }, {
+                    type: 'crew'
                 }
-            },
+            ],
             drivers: []
         }
 

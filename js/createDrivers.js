@@ -9,8 +9,11 @@ function createDrivers(driversToGenerate, teams) {
             faultAllowance: getRandomNumber(0, 10),
             cornerSkill: getRandomNumber(0, 10),
             straightSkill: getRandomNumber(0, 10),
+            totalSkill: 0,
+            cost: getRandomNumber(1, 10),
             car: []
         }
+        newDriver.totalSkill = newDriver.cornerSkill + newDriver.straightSkill + newDriver.faultAllowance;
 
         driverArray.push(newDriver);
     }

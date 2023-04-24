@@ -26,7 +26,7 @@ function createVehicles(vehiclesToGenerate, faculty) {
 
         vehicleArray.push(newVehicle);
     }
-    
+
     return vehicleArray;
 }
 

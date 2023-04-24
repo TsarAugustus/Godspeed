@@ -11,10 +11,11 @@ function main() {
 
     let circuitsToGenerate  = 1;
     let teamsToGenerate     = 10;
-    let driversToGenerate   = 1;
+    let driversToGenerate   = 10;
     let facultyToGenerate   = 10;
     let vehiclesToGenerate  = 1;
     let seasonsToGenerate   = 1;
+    let driverLimit         = 2;
 
     let circuits    = createCircuit(circuitsToGenerate);
     let teams       = createTeams(teamsToGenerate);
@@ -27,7 +28,8 @@ function main() {
         teams: teams,
         drivers: drivers,
         faculty: faculty,
-        vehicles: vehicles
+        vehicles: vehicles,
+        driverLimit: driverLimit
     }
 
     initialize(seasonsToGenerate, initPaddock);
@@ -52,6 +54,7 @@ function generateSeason(initPaddock, seasonNumber) {
     for(let i=0; i<initPaddock.circuits.length; i++) {
         if(i === 0) {
             seasonPaddock = assemblePaddock(initPaddock);
+            console.log(seasonPaddock)
         }
         // seasonResult.push(circuitStep(initPaddock), i);
     }
