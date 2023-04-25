@@ -3,7 +3,7 @@ import { attemptDriverBuy } from "./attemptDriverBuy.js";
 import { attemptFacultyBuy } from "./attemptFacultyBuy.js";
 
 function assemblePaddock(initPaddock) {
-    console.log('Assembling First Paddock');
+    // console.log('Assembling Paddock');
 
     let teamPool    = initPaddock.teams;
     let vehiclePool = initPaddock.vehicles;
@@ -46,7 +46,7 @@ function assemblePaddock(initPaddock) {
             if(seasonTeams[i].drivers.length === 0) {
                 let driverBuy = attemptDriverBuy(seasonTeams[i], driverPool, initPaddock.driverLimit);
                 for(let iii=0; iii<driverBuy.length; iii++) {
-                    driverBuy[iii].team = seasonTeams[i]
+                    driverBuy[iii].team = seasonTeams[i];
                     driverPool = driverPool.filter(function(driverPoolDriver) {
                         return driverPoolDriver.name !== driverBuy[iii].name
                     })

@@ -8,28 +8,35 @@
 #gameArea {
     display: flex;
     align-items: center;
-    border: 1px solid black;
-    /* height: 100%;
-    width: 100%; */
-    flex-direction: row;
-    flex-wrap: wrap;
+    /* border: 1px solid black; */
+    /* height: 100%; */
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
 }
 
 .season {
     display: flex;
-    width: 100%;
-    border: 1px solid black;
+    /* width: 100%; */
+    text-align: center;
+    flex-wrap: nowrap;
+    border-bottom: 1px solid black;
+}
+
+.standings {
+    width: 10vw;
 }
 
 .circuitResult {
-    border: 1px solid black
+    border: 1px solid black;
+    width: 8vw;
 }
 
 .driverList {
     /* min-width: 10%; */
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
+    /* width: 10vw; */
 }
 
 #info {

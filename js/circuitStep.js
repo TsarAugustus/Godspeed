@@ -109,13 +109,29 @@ function pathStep(driver, path) {
 
 function evaluatePathType(driver, path) {
     let returnNum = 0;
+    let thisFaultValue = getRandomNumber(0, 10);
+
     if(path.type === 'Corner') {
-        returnNum = driver.cornerSkill - path.skill;
+        if(driver.faultAllowance >= driver.vehicle.faultChance) {
+            returnNum = driver.cornerSkill - path.skill;
+        } else {
+            // console.log('CORNER FAULT', driver, path)
+            returnNum = (path.skill - driver.cornerSkill) / thisFaultValue;
+        }
     } else if(path.type === 'Straight') {
-        returnNum = driver.straightSkill - path.skill;
+        if(driver.faultAllowance >= driver.vehicle.faultChance) {
+            returnNum = driver.straightSkill - path.skill;
+        } else {
+            // console.log('STRAIGHT FAULT', driver, path)
+            returnNum = (path.skill - driver.straightSkill) / thisFaultValue;
+        }
     }
 
     return returnNum;
+}
+
+function getRandomNumber(min, max) {
+    return Math.round(Math.random() * (max - min) + min);
 }
 
 export { circuitStep }
