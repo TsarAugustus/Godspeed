@@ -2,6 +2,7 @@ import { pointsTable } from './pointsTable.js';
 
 function createHTMLResult(result) {
     let gameArea = document.getElementById('gameArea');
+
     for(let i=0; i<result.length; i++) {
 
         let thisSeason = result[i];
@@ -15,13 +16,13 @@ function createHTMLResult(result) {
         driverStandingElement.innerHTML = '<h2>Final Standings</h2>';
         driverStandingElement.classList.add('standings');
 
-        // console.log(result)
-
         for(let ii=0; ii<thisSeason.finalResult.length; ii++) {
             let finalResultDriver = thisSeason.finalResult[ii];
             let finalResultDriverElement = document.createElement('p');
-            // console.log(finalResultDriver)
-            finalResultDriverElement.innerHTML = `${finalResultDriver.name} - ${finalResultDriver.championships} - ${finalResultDriver.team.name}- ${finalResultDriver.pointsTotal}`
+            finalResultDriverElement.innerHTML = `${finalResultDriver.name} - ${finalResultDriver.championships} - ${finalResultDriver.team.name}- ${finalResultDriver.pointsTotal}`;
+            if(finalResultDriver.championships > 0) {
+                finalResultDriverElement.classList.add('previousChampion')
+            }
 
             if(ii === 0) {
                 //First Place

@@ -24,7 +24,11 @@
 }
 
 .standings {
-    width: 10vw;
+    width: 15vw;
+}
+
+.previousChampion {
+    font-weight: bold;
 }
 
 .circuitResult {

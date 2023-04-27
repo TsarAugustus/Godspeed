@@ -12,9 +12,11 @@ function createDrivers(driversToGenerate, teams) {
             totalSkill: 0,
             totalPoints: 0,
             cost: getRandomNumber(1, 10),
-            retirement: getRandomNumber(1, 10),
+            retirement: getRandomNumber(5, 15),
             contractLength: getRandomNumber(1, 10),
             championships: 0,
+            seasonEntered: 0,
+            seasonRetired: 0,
             vehicle: []
         }
         newDriver.totalSkill = newDriver.cornerSkill + newDriver.straightSkill + newDriver.faultAllowance;

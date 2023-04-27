@@ -14,9 +14,7 @@ function circuitStep(teams, circuit) {
             // result: result,
             points: 0
         }
-        // console.log(result)
         circuitTeamResult.push(teamResult);
-        // circuitTeamResult.push(teamResult);
     }
 
     for(let i=0; i<circuitTeamResult.length; i++) {
@@ -85,15 +83,19 @@ function driverStep(driver, circuit) {
 }
 
 function lapStep(driver, circuit) {
-    let pathTotal = [];
-
     let thisLap = {
         total: 0
     }
 
     for(let i=0; i<circuit.path.length; i++) {
-        thisLap.total = pathStep(driver, circuit.path[i]);
+        let thisStep = pathStep(driver, circuit.path[i]);
+        if(thisStep !== Infinity || thisLap !== NaN) {
+            thisLap.total = pathStep(driver, circuit.path[i]);
+        } else {
+            thisLap.total = 0;
+        }
     }
+
     return thisLap;
 }
 
@@ -110,20 +112,20 @@ function pathStep(driver, path) {
 function evaluatePathType(driver, path) {
     let returnNum = 0;
     let thisFaultValue = getRandomNumber(0, 10);
-
+    // console.log(driver.name, driver, path, thisFaultValue)
     if(path.type === 'Corner') {
         if(driver.faultAllowance >= driver.vehicle.faultChance) {
-            returnNum = driver.cornerSkill - path.skill;
+            returnNum = ((driver.vehicle.cornerSkill / driver.cornerSkill) - path.skill) * driver.vehicle.cornerSpeed;
         } else {
             // console.log('CORNER FAULT', driver, path)
-            returnNum = (path.skill - driver.cornerSkill) / thisFaultValue;
+            returnNum = ((path.skill - (driver.vehicle.cornerSkill / driver.cornerSkill)) / thisFaultValue) * driver.vehicle.cornerSpeed;
         }
     } else if(path.type === 'Straight') {
         if(driver.faultAllowance >= driver.vehicle.faultChance) {
-            returnNum = driver.straightSkill - path.skill;
+            returnNum = ((driver.vehicle.straightSkill / driver.straightSkill) - path.skill) * driver.vehicle.straightSpeed;
         } else {
             // console.log('STRAIGHT FAULT', driver, path)
-            returnNum = (path.skill - driver.straightSkill) / thisFaultValue;
+            returnNum = ((path.skill - (driver.vehicle.straightSkill / driver.straightSkill)) / thisFaultValue) * driver.vehicle.straightSpeed;
         }
     }
 

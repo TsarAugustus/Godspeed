@@ -87,16 +87,6 @@ function assemblePaddock(initPaddock) {
         }
     }
     
-    //DEBUGGING PURPOSES
-    // let driversNum = 0; 
-    // for(let i=0; i<filteredTeams.length; i++) {
-    //     for(let ii=0; ii<filteredTeams[i].drivers.length; ii++) {
-    //         driversNum++;
-    //     }
-    // }
-    // console.log('TEAMS: ', filteredTeams.length, 'DRIVERS', driversNum);
-    // console.log(filteredTeams)
-    
     return filteredTeams;
 }
 

@@ -6,15 +6,23 @@ import { createVehicles }   from './createVehicles.js';
 import { assemblePaddock }  from './assemblePaddock.js';
 import { circuitStep } from './circuitStep.js';
 import { createHTMLResult } from './createHTMLResult.js';
+import { evaluatePaddock } from './evaluatePaddock.js';
 
 function main() {
+
+    let retiredDriversElement = document.createElement('p');
+    retiredDriversElement.id = `retiredDrivers`;
+    retiredDriversElement.innerHTML = '<h2>Retired Drivers</h2>';
+    // retiredDriversElement.classList.add('retiredDrivers');
+
+    document.body.appendChild(retiredDriversElement);
     //Generates the area for the game
     createGameArea();
 
     let circuitsToGenerate  = 10;
     let teamsToGenerate     = 10;
     let driversToGenerate   = 30;
-    let facultyToGenerate   = 10;
+    let facultyToGenerate   = 30;
     let vehiclesToGenerate  = 1;
     let seasonsToGenerate   = 10;
     let driverLimit         = 2;
@@ -48,6 +56,8 @@ function initialize(seasonsToGenerate, initPaddock) {
 
         if(paddock.length === 0) {
             paddock = assemblePaddock(initPaddock)
+        } else {
+            paddock = evaluatePaddock(paddock, seasonArray, i);
         }
 
         let seasonResult = {
@@ -64,7 +74,6 @@ function initialize(seasonsToGenerate, initPaddock) {
                 seasonResult.seasonDrivers.push(thisDriver);
             }
         }
-        // console.log(seasonResult, paddock)
 
         seasonResult.finalResult = calculateSeasonResult(seasonResult, seasonArray);
         seasonArray.push(seasonResult);
@@ -76,10 +85,6 @@ function initialize(seasonsToGenerate, initPaddock) {
 
 function calculateSeasonResult(seasonResult, seasonArray) {
     let finalResultArray = [];
-
-    if(seasonArray.length > 0) {
-        // console.log(seasonArray)
-    }
 
     for(let i=0; i<seasonResult.seasonDrivers.length; i++) {
         let thisDriver = seasonResult.seasonDrivers[i];
