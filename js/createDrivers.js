@@ -1,11 +1,11 @@
-function createDrivers(driversToGenerate, teams) {
+function createDrivers(driversToGenerate, seasonNum) {
     console.log('Creating Drivers', driversToGenerate);
 
     let driverArray = [];
-
     for(let i=0; i<driversToGenerate; i++) {
         let newDriver = {
-            name: `Driver ${i+1}`,
+            name: `Driver ${seasonNum}-${i+1}`,
+            seasonNum: seasonNum,
             faultAllowance: getRandomNumber(0, 10),
             cornerSkill: getRandomNumber(0, 10),
             straightSkill: getRandomNumber(0, 10),
@@ -19,6 +19,7 @@ function createDrivers(driversToGenerate, teams) {
             seasonRetired: 0,
             vehicle: []
         }
+
         newDriver.totalSkill = newDriver.cornerSkill + newDriver.straightSkill + newDriver.faultAllowance;
 
         driverArray.push(newDriver);

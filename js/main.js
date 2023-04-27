@@ -29,7 +29,7 @@ function main() {
 
     let circuits    = createCircuit(circuitsToGenerate);
     let teams       = createTeams(teamsToGenerate);
-    let drivers     = createDrivers(driversToGenerate, teams);
+    let drivers     = createDrivers(driversToGenerate, 0);
     let faculty     = createFaculty(facultyToGenerate, teams);
     let vehicles    = createVehicles(vehiclesToGenerate, faculty);
 
@@ -57,7 +57,7 @@ function initialize(seasonsToGenerate, initPaddock) {
         if(paddock.length === 0) {
             paddock = assemblePaddock(initPaddock)
         } else {
-            paddock = evaluatePaddock(paddock, seasonArray, i);
+            paddock = evaluatePaddock(paddock, seasonArray, i, initPaddock);
         }
 
         let seasonResult = {
