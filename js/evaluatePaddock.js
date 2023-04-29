@@ -1,4 +1,9 @@
 import { createDrivers } from "./createDrivers.js";
+import { createTeams } from "./createTeams.js";
+import { createFaculty } from "./createFaculty.js";
+import { attemptCEOTeamBuy } from "./attemptCEOTeamBuy.js";
+import { attemptFacultyBuy } from "./attemptFacultyBuy.js";
+import { attemptDriverBuy } from "./attemptDriverBuy.js";
 
 function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
     let teams = [];
@@ -41,19 +46,19 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
             if(evaluateDriverRetirement(drivers[i]).retired) {
                 drivers[i].seasonRetired = currentSeasonNum;
                 let retiredDriversElement = document.getElementById('retiredDrivers');
-                retiredDriversElement.innerHTML += `${drivers[i].name}  - ${drivers[i].seasonRetired}</br>`;
+                retiredDriversElement.innerHTML += `${drivers[i].name} - ${drivers[i].championships} - ${drivers[i].seasonRetired}</br>`;
                 retiredDrivers.push(drivers[i]);
-                // drivers.splice(drivers[i], 1);
             }
         }
 
         //Evaluate a new driver contract
         if(undefined !== drivers[i] && drivers[i].contractLength === 0) {
-            if(evaluateDriverContract(drivers[i], teams).expired) {
+            if(evaluateDriverContract(drivers[i], teams, seasonArray).expired) {
                 drivers[i].team = {};
                 drivers[i].vehicle = {};
                 freeDrivers.push(drivers[i]);
-                // drivers.splice(drivers[i], 1);
+            } else {
+                drivers[i].contractLength = getRandomNumber(1, 5);
             }
         }
     }
@@ -85,6 +90,7 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
         }
     }
 
+    //Iterate through teams/free drivers, assign driver if the team can afford it
     for(let i=0; i<paddock.length; i++) {
         for(let ii=0; ii<freeDrivers.length; ii++) {
             if(paddock[i].drivers.length === 0 && paddock[i].money >= freeDrivers[ii].cost) {
@@ -103,6 +109,74 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
         }
     }
 
+
+
+    let newTeamPool = createTeams(initPaddock.teamLimit - paddock.length, currentSeasonNum);
+    let newFacultyPool = createFaculty(newTeamPool.length * 2, newTeamPool, currentSeasonNum);
+    let potentialNewTeams = []; 
+
+    //Iterate through new faculty, find the CEO and attempt to buy a team
+    for(let i=0; i<newFacultyPool.length; i++) {
+        let newCEOTeam = attemptCEOTeamBuy(newTeamPool, newFacultyPool[i]);
+        if(newFacultyPool[i].type === 'CEO' && undefined !== newCEOTeam.name) {
+            potentialNewTeams.push(newCEOTeam);
+            newTeamPool = newTeamPool.filter(thisTeam => thisTeam.name !== newCEOTeam.name);
+            newFacultyPool = newFacultyPool.filter(ceo => ceo.name !== newFacultyPool[i].name);
+        }
+    }
+
+    //Fill in the rest of the faculty members on each new potential team
+    for(let i=0; i<potentialNewTeams.length; i++) {
+        for(let ii=0; ii<potentialNewTeams[i].faculty.length; ii++) {
+            let newTeamFaculty = attemptFacultyBuy(potentialNewTeams[i], ii, newFacultyPool);
+            if(undefined === potentialNewTeams[i].faculty[ii].name && undefined !== newTeamFaculty.name) {
+                potentialNewTeams[i].faculty[ii] = newTeamFaculty;
+                newFacultyPool = newFacultyPool.filter(member => member.name !== newTeamFaculty.name);
+            } 
+        }
+
+        //Fill in the drivers if the team can afford it
+        let newTeamDrivers = attemptDriverBuy(potentialNewTeams[i], freeDrivers, initPaddock.driverLimit);
+        if(potentialNewTeams[i].drivers.length < initPaddock.driverLimit && newTeamDrivers.length > 0) {
+            let thisPotentialDriver = {};
+            for(let ii=0; ii<newTeamDrivers.length; ii++) {
+                if(Object.keys(thisPotentialDriver).length === 0) {
+                    thisPotentialDriver = newTeamDrivers[ii];
+                } else if (newTeamDrivers[ii].totalSkill > thisPotentialDriver.totalSkill) {
+                    thisPotentialDriver = newTeamDrivers[ii];
+                }
+            }
+
+            //Check if there is a potential driver, if there is, add them to the team
+            if(Object.keys(thisPotentialDriver).length !== 0) {
+                thisPotentialDriver.team = potentialNewTeams[i];
+                potentialNewTeams[i].drivers.push(thisPotentialDriver);
+                freeDrivers = freeDrivers.filter(driver => driver.name !== thisPotentialDriver.name);
+            }
+        }
+    }
+
+    //Final check on potential new teams. If they have drivers and all faculty members, add them to the paddock
+    for(let i=0; i<potentialNewTeams.length; i++) {
+        let facultyCheck = 0;
+        let driverCheck = false;
+
+        for(let ii=0; ii<potentialNewTeams[i].faculty.length; ii++) {
+            if(undefined !== potentialNewTeams[i].faculty[ii].name) {
+                facultyCheck++
+            }
+        }
+
+        if(potentialNewTeams[i].drivers.length !== 0) {
+            driverCheck = true;
+        }
+
+        if(driverCheck && facultyCheck === potentialNewTeams[i].faculty.length) {
+            paddock.push(potentialNewTeams[i]);
+            potentialNewTeams = potentialNewTeams.filter(team => team.name !== potentialNewTeams[i].name)
+        }
+    }
+
     return paddock;
 }
 
@@ -111,10 +185,34 @@ function evaluateDriverRetirement(driver) {
     return { retired: retired };
 }
 
-function evaluateDriverContract(driver, teams) {
-    let expired = true;
+function evaluateDriverContract(driver, teams, seasonArray) {
+    let expired;
+
+    let driverTeamCEO = getFacultyMember(driver.team, 'CEO')[0];
+
+    let driverBestResult = 0;
+
+    for(let i=0; i<seasonArray.length; i++) {
+        for(let ii=0; ii<seasonArray[i].finalResult.length; ii++) {
+            if(seasonArray[i].finalResult[ii].name === driver.name) {
+                if(ii > driverBestResult) {
+                    driverBestResult = ii;
+                }
+            }
+        }
+    }
+
+    if(driverBestResult <= driverTeamCEO.expectation) {
+        expired = false;
+    } else {
+        expired = true;
+    }
 
     return { expired: expired };
+}
+
+function getFacultyMember(team, member) {
+    return team.faculty.filter(thisMember => thisMember.type === member);
 }
 
 function getRandomNumber(min, max) {

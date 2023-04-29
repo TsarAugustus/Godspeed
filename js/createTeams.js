@@ -1,10 +1,10 @@
-function createTeams(teamsToGenerate) {
+function createTeams(teamsToGenerate, seasonNum) {
     console.log('Creating Teams', teamsToGenerate);
     
     let teamArray = [];
     for(let i=0; i<teamsToGenerate; i++) {
         let newTeam = {
-            name: `Team ${i+1}`,
+            name: `Team ${seasonNum}-${i+1}`,
             money: getRandomNumber(0, 10),
             prestige: getRandomNumber(0, 10),
             faculty: [

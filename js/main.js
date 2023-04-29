@@ -19,18 +19,18 @@ function main() {
     //Generates the area for the game
     createGameArea();
 
-    let circuitsToGenerate  = 10;
+    let circuitsToGenerate  = 22;
     let teamsToGenerate     = 10;
     let driversToGenerate   = 30;
     let facultyToGenerate   = 30;
     let vehiclesToGenerate  = 1;
-    let seasonsToGenerate   = 10;
+    let seasonsToGenerate   = 73;
     let driverLimit         = 2;
 
     let circuits    = createCircuit(circuitsToGenerate);
-    let teams       = createTeams(teamsToGenerate);
+    let teams       = createTeams(teamsToGenerate, 0);
     let drivers     = createDrivers(driversToGenerate, 0);
-    let faculty     = createFaculty(facultyToGenerate, teams);
+    let faculty     = createFaculty(facultyToGenerate, teams, 0);
     let vehicles    = createVehicles(vehiclesToGenerate, faculty);
 
     let initPaddock = {
@@ -39,7 +39,8 @@ function main() {
         drivers: drivers,
         faculty: faculty,
         vehicles: vehicles,
-        driverLimit: driverLimit
+        driverLimit: driverLimit,
+        teamLimit: teamsToGenerate
     }
 
     let result = initialize(seasonsToGenerate, initPaddock);
