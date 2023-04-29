@@ -26,49 +26,63 @@ function generateCeo(teamNum, seasonNum) {
         name: `CEO ${seasonNum}-${teamNum + 1}`,
         money: ceoMoney,
         expectation: ceoExpectation,
-        type: 'CEO'
+        type: 'CEO',
+        skill: getRandomNumber(1, 10),
+        speed: getRandomNumber(1, 10)
     }
 }
 
 function generatePrincipal(teamNum, seasonNum) {
     return {
         name: `Principal ${seasonNum}-${teamNum + 1}`,
-        level: getRandomNumber(0, 10),
+        level: getRandomNumber(1, 10),
         type: 'PRINCIPAL',
-        cost: getRandomNumber(0, 10)
+        cost: getRandomNumber(1, 10),
+        skill: getRandomNumber(1, 10),
+        money: getRandomNumber(1, 10),
+        speed: getRandomNumber(1, 10)
     }
 }
 
 function generateStrategist(teamNum, seasonNum) {
     return {
         name: `Strategist ${seasonNum}-${teamNum + 1}`,
-        level: getRandomNumber(0, 10),
+        level: getRandomNumber(1, 10),
         type: 'STRATEGIST',
-        cost: getRandomNumber(0, 10)
+        cost: getRandomNumber(1, 10),
+        skill: getRandomNumber(1, 10),
+        money: getRandomNumber(1, 10),
+        speed: getRandomNumber(1, 10)
     }
 }
 
 function generateMechanic(teamNum, seasonNum) {
     return {
         name: `Mechanic ${seasonNum}-${teamNum + 1}`,
-        level: getRandomNumber(0, 10),
+        level: getRandomNumber(1, 10),
         type: 'MECHANIC',
-        cost: getRandomNumber(0, 10)
+        cost: getRandomNumber(1, 10),
+        skill: getRandomNumber(1, 10),
+        money: getRandomNumber(1, 10),
+        speed: getRandomNumber(1, 10)
     }
 }
 
 function generateEngineer(teamNum, seasonNum) {
-    let creativity = getRandomNumber(0, 10)
+    let creativity = getRandomNumber(1, 10)
     let conventionalDesign = getRandomNumber(0, creativity);
     
     let thisEngineer = {
         name: `Engineer ${seasonNum}-${teamNum + 1}`,
-        level: getRandomNumber(0, 10),
+        level: getRandomNumber(1, 10),
         type: 'ENGINEER',
-        costSaving: getRandomNumber(0, 10),
+        costSaving: getRandomNumber(1, 10),
         conventionalDesign: conventionalDesign, //if low, then they design a conventional car | if high, not conventional and has risks
         faultChance: getRandomNumber(conventionalDesign, 10),
-        cost: getRandomNumber(0, 10),
+        cost: getRandomNumber(1, 10),
+        money: getRandomNumber(1, 10),
+        skill: getRandomNumber(1, 10),
+        speed: getRandomNumber(1, 10),
         vehicle: {}
     }
 
@@ -78,9 +92,12 @@ function generateEngineer(teamNum, seasonNum) {
 function generateCrew(teamNum, seasonNum) {
     return {
         name: `Crew ${seasonNum}-${teamNum + 1}`,
-        level: getRandomNumber(0, 10),
+        level: getRandomNumber(1, 10),
         type: 'CREW',
-        cost: getRandomNumber(0, 10)
+        cost: getRandomNumber(1, 10),
+        money: getRandomNumber(1, 10),
+        skill: getRandomNumber(1, 10),
+        speed: getRandomNumber(1, 10)
     }
 }
 

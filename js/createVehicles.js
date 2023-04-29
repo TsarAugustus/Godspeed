@@ -1,4 +1,4 @@
-function createVehicles(vehiclesToGenerate, faculty) {
+function createVehicles(vehiclesToGenerate, faculty, seasonNum) {
     //Vehicles are to be influenced by the engineers created
     let engineerArray = [];
     let vehicleArray = [];
@@ -14,7 +14,7 @@ function createVehicles(vehiclesToGenerate, faculty) {
         let thisEngineer = engineerArray[i];
 
         let newVehicle = {
-            name: `Vehicle ${i+1}`,
+            name: `Vehicle ${seasonNum}-${i+1}`,
             engineer: thisEngineer,
             cost: getRandomNumber(thisEngineer.costSaving, 10) - thisEngineer.costSaving,
             faultChance: getRandomNumber(thisEngineer.conventionalDesign, thisEngineer.faultChance),

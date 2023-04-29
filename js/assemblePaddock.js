@@ -80,6 +80,10 @@ function assemblePaddock(initPaddock) {
         }        
         
         if(teamPassValue === seasonTeams[i].faculty.length) {
+            //Add faculty money to team
+            // for(let ii=0; ii<seasonTeams[i].faculty.length; ii++) {
+            //     seasonTeams[i].money += seasonTeams[i].faculty[ii].money;
+            // }
             filteredTeams.push(seasonTeams[i])
             for(let ii=0; ii<seasonTeams[i].drivers.length; ii++) {
                 seasonTeams[i].drivers[ii].vehicle = seasonTeams[i].faculty[4].vehicle

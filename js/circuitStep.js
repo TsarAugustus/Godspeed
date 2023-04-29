@@ -20,7 +20,7 @@ function circuitStep(teams, circuit) {
     for(let i=0; i<circuitTeamResult.length; i++) {
         let thisTeam = circuitTeamResult[i];
         for(let ii=0; ii<thisTeam.length; ii++) {
-            circuitDriverResult.push(thisTeam[ii]);
+            circuitResult.push(thisTeam[ii]);
         }
     }
 
@@ -76,6 +76,23 @@ function driverStep(driver, circuit) {
     };
 
     for(let i=0; i<circuit.laps; i++) {
+        if(Math.round(circuit.laps / 2) === i) {
+            let thisEngineer = getFacultyMember(driver.team, 'ENGINEER')[0];
+            let thisCrew = getFacultyMember(driver.team, 'CREW')[0];
+            let thisMechanic = getFacultyMember(driver.team, 'MECHANIC')[0];
+            let thisStrategist = getFacultyMember(driver.team, 'STRATEGIST')[0];
+            let thisPrincipal = getFacultyMember(driver.team, 'PRINCIPAL')[0];
+            let thisCEO = getFacultyMember(driver.team, 'CEO')[0];
+            let thisLap = {
+                total: (thisEngineer.skill / thisEngineer.speed) + 
+                        (thisCrew.skill / thisEngineer.speed) + 
+                        (thisMechanic.skill / thisMechanic.speed) + 
+                        (thisStrategist.skill / thisStrategist.speed) + 
+                        (thisPrincipal.skill / thisPrincipal.speed) + 
+                        (thisCEO.skill / thisPrincipal.speed)
+            }
+            lapTotal.result.push(thisLap)
+        }
         lapTotal.result.push(lapStep(driver, circuit));
     }
 
@@ -112,14 +129,17 @@ function pathStep(driver, path) {
 function evaluatePathType(driver, path) {
     let returnNum = 0;
     let thisFaultValue = getRandomNumber(0, 10);
-    // console.log(driver.name, driver, path, thisFaultValue)
     if(path.type === 'Corner') {
         if(driver.faultAllowance >= driver.vehicle.faultChance) {
             returnNum = ((driver.vehicle.cornerSkill / driver.cornerSkill) - path.skill) * driver.vehicle.cornerSpeed;
         } else {
-            // console.log('CORNER FAULT', driver, path)
             returnNum = ((path.skill - (driver.vehicle.cornerSkill / driver.cornerSkill)) / thisFaultValue) * driver.vehicle.cornerSpeed;
         }
+
+        if(driver.vehicle.cornerSkill > path.skill && driver.vehicle.cornerSpeed > driver.cornerSkill) {
+            returnNum = Number.MIN_VALUE;
+        }
+
     } else if(path.type === 'Straight') {
         if(driver.faultAllowance >= driver.vehicle.faultChance) {
             returnNum = ((driver.vehicle.straightSkill / driver.straightSkill) - path.skill) * driver.vehicle.straightSpeed;
@@ -127,9 +147,17 @@ function evaluatePathType(driver, path) {
             // console.log('STRAIGHT FAULT', driver, path)
             returnNum = ((path.skill - (driver.vehicle.straightSkill / driver.straightSkill)) / thisFaultValue) * driver.vehicle.straightSpeed;
         }
+
+        if(driver.vehicle.straightSkill > path.skill && driver.vehicle.straightSpeed > driver.straightSkill) {
+            returnNum = Number.MIN_VALUE;
+        }
     }
 
     return returnNum;
+}
+
+function getFacultyMember(team, member) {
+    return team.faculty.filter(thisMember => thisMember.type === member);
 }
 
 function getRandomNumber(min, max) {

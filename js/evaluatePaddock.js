@@ -4,6 +4,7 @@ import { createFaculty } from "./createFaculty.js";
 import { attemptCEOTeamBuy } from "./attemptCEOTeamBuy.js";
 import { attemptFacultyBuy } from "./attemptFacultyBuy.js";
 import { attemptDriverBuy } from "./attemptDriverBuy.js";
+import { createVehicles } from "./createVehicles.js";
 
 function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
     let teams = [];
@@ -43,7 +44,7 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
 
         //Evaluate driver retirement
         if(drivers[i].retirement === 0) {
-            if(evaluateDriverRetirement(drivers[i]).retired) {
+            if(evaluateDriverRetirement(drivers[i], currentSeasonNum).retired) {
                 drivers[i].seasonRetired = currentSeasonNum;
                 let retiredDriversElement = document.getElementById('retiredDrivers');
                 retiredDriversElement.innerHTML += `${drivers[i].name} - ${drivers[i].championships} - ${drivers[i].seasonRetired}</br>`;
@@ -177,11 +178,27 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
         }
     }
 
+    //Create new vehicles each season
+    for(let i=0; i<paddock.length; i++) {
+        let thisEngineer = paddock[i].faculty.filter(member => member.type === 'ENGINEER');
+        let newVehicle = createVehicles(1, thisEngineer, currentSeasonNum)[0];
+        thisEngineer.vehicle = newVehicle;
+        for(let ii=0; ii<paddock[i].drivers.length; ii++) {
+            paddock[i].drivers[ii].vehicle = newVehicle;
+        }
+    }
+    
     return paddock;
 }
 
-function evaluateDriverRetirement(driver) {
+function evaluateDriverRetirement(driver, currentSeasonNum) {
     let retired = true;
+    if(driver.seasonEntered <= currentSeasonNum - 5) {
+        retired = true;
+    } else {
+        retired = false;
+    }
+
     return { retired: retired };
 }
 
