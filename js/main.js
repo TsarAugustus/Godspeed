@@ -24,7 +24,7 @@ function main() {
     let driversToGenerate   = 30;
     let facultyToGenerate   = 30;
     let vehiclesToGenerate  = 1;
-    let seasonsToGenerate   = 10;
+    let seasonsToGenerate   = 50;
     let driverLimit         = 2;
 
     let circuits    = createCircuit(circuitsToGenerate);
@@ -68,8 +68,8 @@ function initialize(seasonsToGenerate, initPaddock) {
             seasonDrivers: []
         }
 
-        paddock.forEach( (team) => {
-            team.drivers.forEach( (driver) => {
+        paddock.forEach(team => {
+            team.drivers.forEach(driver => {
                 seasonResult.seasonDrivers.push(driver);
             });
         });

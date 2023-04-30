@@ -83,6 +83,7 @@ function driverStep(driver, circuit) {
             let thisStrategist = getFacultyMember(driver.team, 'STRATEGIST')[0];
             let thisPrincipal = getFacultyMember(driver.team, 'PRINCIPAL')[0];
             let thisCEO = getFacultyMember(driver.team, 'CEO')[0];
+            
             let thisLap = {
                 total: (thisEngineer.skill / thisEngineer.speed) + 
                         (thisCrew.skill / thisEngineer.speed) + 
@@ -126,7 +127,6 @@ function pathStep(driver, path) {
 
 function evaluatePathType(driver, path) {
     let returnNum = 0;
-    
     if(path.type === 'Corner') {
         returnNum = getRandomNumber(-100, 100);
 
