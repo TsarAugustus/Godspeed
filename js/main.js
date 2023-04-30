@@ -7,6 +7,7 @@ import { assemblePaddock }  from './assemblePaddock.js';
 import { circuitStep } from './circuitStep.js';
 import { createHTMLResult } from './createHTMLResult.js';
 import { evaluatePaddock } from './evaluatePaddock.js';
+import { calculateSeasonResult } from './calculateSeasonResult.js';
 
 function main() {
 
@@ -19,12 +20,12 @@ function main() {
     //Generates the area for the game
     createGameArea();
 
-    let circuitsToGenerate  = 10;
-    let teamsToGenerate     = 13;
+    let circuitsToGenerate  = 7;
+    let teamsToGenerate     = 12;
     let driversToGenerate   = 30;
     let facultyToGenerate   = 30;
     let vehiclesToGenerate  = 1;
-    let seasonsToGenerate   = 50;
+    let seasonsToGenerate   = 10;
     let driverLimit         = 2;
 
     let circuits    = createCircuit(circuitsToGenerate);
@@ -51,15 +52,11 @@ function initialize(seasonsToGenerate, initPaddock) {
     console.log('Initializing Seasons', seasonsToGenerate);
     let seasonArray = [];
 
-
     let paddock = [];
     for(let i=0; i<seasonsToGenerate; i++) {
 
-        if(paddock.length === 0) {
-            paddock = assemblePaddock(initPaddock)
-        } else {
-            paddock = evaluatePaddock(paddock, seasonArray, i, initPaddock);
-        }
+        if(paddock.length === 0) paddock = assemblePaddock(initPaddock)
+        else paddock = evaluatePaddock(paddock, seasonArray, i, initPaddock)
 
         let seasonResult = {
             name: `Season ${i + 1}`,
@@ -74,63 +71,15 @@ function initialize(seasonsToGenerate, initPaddock) {
             });
         });
 
-        seasonResult.finalResult = calculateSeasonResult(seasonResult, seasonArray);
-        seasonArray.push(seasonResult);
+        seasonResult.finalResult = calculateSeasonResult(seasonResult, seasonArray).finalResult;
+        seasonResult.teamResult = calculateSeasonResult(seasonResult, seasonArray).teamResult;
 
+        seasonArray.push(seasonResult);
     }
+
+    console.log(seasonArray)
 
     return seasonArray;
-}
-
-function calculateSeasonResult(seasonResult, seasonArray) {
-    let finalResultArray = [];
-
-    seasonResult.seasonDrivers.forEach(seasonDriverResult => {
-        let driverResult = {
-            name: seasonDriverResult.name,
-            pointsTotal: 0,
-            totalAfterCircuit: 0,
-            championships: 0,
-            team: seasonDriverResult.team
-        };
-
-        seasonResult.result.forEach(circuitResult => {
-            circuitResult.result.circuitResult.forEach(driverResultArray => {
-                if (driverResultArray.driver.name == seasonDriverResult.name) driverResult.pointsTotal += driverResultArray.points;
-            });
-        });
-
-        finalResultArray.push(driverResult)            
-    });
-    
-    //Sorts the final result by points
-    finalResultArray.sort(function(a, b) {
-        return b.pointsTotal - a.pointsTotal;
-    });
-
-    //Create array to hold previous champions
-    let champions = [];
-
-    //Push this seasons champion
-    if(champions.length === 0) {
-        champions.push(finalResultArray[0]);
-    }
-    
-    //Go through each season, grab sorted final result, push to champion array
-    seasonArray.forEach(arrayIndex => {
-        champions.push(arrayIndex.finalResult[0]);
-    });
-
-    //Find each champion, match their championships to their driver
-    finalResultArray.forEach(result => {
-        champions.forEach(champion => {
-            if(result.name === champion.name) {
-                result.championships++;
-            }
-        });
-    });
-
-    return finalResultArray;
 }
 
 function generateSeason(paddock, seasonNumber, circuits) {

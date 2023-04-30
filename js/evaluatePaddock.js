@@ -6,7 +6,6 @@ import { attemptCEOTeamBuy }    from "./attemptCEOTeamBuy.js";
 import { attemptFacultyBuy }    from "./attemptFacultyBuy.js";
 import { attemptDriverBuy }     from "./attemptDriverBuy.js";
 import { createVehicles }       from "./createVehicles.js";
-import { fillTeamFaculty }      from './fillTeamFaculty.js';
 
 function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
     let teams = [];

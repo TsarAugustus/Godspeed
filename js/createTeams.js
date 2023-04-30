@@ -9,6 +9,8 @@ function createTeams(teamsToGenerate, seasonNum) {
             name: `Team ${seasonNum}-${i+1}`,
             money: getRandomNumber(0, 10),
             prestige: getRandomNumber(0, 10),
+            points: 0,
+            championships: 0,
             faculty: [
                 { type: 'ceo' }, 
                 { type: 'principal' },
