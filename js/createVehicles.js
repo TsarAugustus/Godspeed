@@ -1,3 +1,5 @@
+import { getRandomNumber } from './getRandomNumber.js';
+
 function createVehicles(vehiclesToGenerate, faculty, seasonNum) {
     //Vehicles are to be influenced by the engineers created
     let engineerArray = [];
@@ -10,28 +12,22 @@ function createVehicles(vehiclesToGenerate, faculty, seasonNum) {
     
     console.log('Creating Vehicles', engineerArray.length);
 
-    for(let i=0; i<engineerArray.length; i++) {
-        let thisEngineer = engineerArray[i];
-
+    engineerArray.forEach((engineer, index) => {
         let newVehicle = {
-            name: `Vehicle ${seasonNum}-${i+1}`,
-            engineer: thisEngineer,
-            cost: getRandomNumber(thisEngineer.costSaving, 10) - thisEngineer.costSaving,
-            faultChance: getRandomNumber(thisEngineer.conventionalDesign, thisEngineer.faultChance),
-            cornerSpeed: getRandomNumber(1, thisEngineer.conventionalDesign),
-            cornerSkill: getRandomNumber(1, thisEngineer.conventionalDesign),
-            straightSpeed: getRandomNumber(1, thisEngineer.conventionalDesign),
-            straightSkill: getRandomNumber(1, thisEngineer.conventionalDesign),
+            name: `Vehicle ${seasonNum}-${index+1}`,
+            engineer: engineer,
+            cost: getRandomNumber(engineer.costSaving, 10) - engineer.costSaving,
+            faultChance: getRandomNumber(engineer.conventionalDesign, engineer.faultChance),
+            cornerSpeed: getRandomNumber(1, engineer.conventionalDesign),
+            cornerSkill: getRandomNumber(1, engineer.conventionalDesign),
+            straightSpeed: getRandomNumber(1, engineer.conventionalDesign),
+            straightSkill: getRandomNumber(1, engineer.conventionalDesign),
         }
 
         vehicleArray.push(newVehicle);
-    }
+    })
 
     return vehicleArray;
-}
-
-function getRandomNumber(min, max) {
-    return Math.round(Math.random() * (max - min) + min);
 }
 
 export { createVehicles };

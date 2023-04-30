@@ -1,3 +1,5 @@
+import { getRandomNumber } from './getRandomNumber.js';
+
 function createDrivers(driversToGenerate, seasonNum) {
     console.log('Creating Drivers', driversToGenerate);
 
@@ -21,17 +23,12 @@ function createDrivers(driversToGenerate, seasonNum) {
         }
 
         newDriver.retirement = getRandomNumber(newDriver.contractLength, getRandomNumber(newDriver.contractLength, 10))
-
         newDriver.totalSkill = newDriver.cornerSkill + newDriver.straightSkill + newDriver.faultAllowance;
 
         driverArray.push(newDriver);
     }
     
     return driverArray;
-}
-
-function getRandomNumber(min, max) {
-    return Math.round(Math.random() * (max - min) + min);
 }
 
 export { createDrivers };

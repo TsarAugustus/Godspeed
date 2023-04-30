@@ -68,13 +68,11 @@ function initialize(seasonsToGenerate, initPaddock) {
             seasonDrivers: []
         }
 
-        for(let ii=0; ii<paddock.length; ii++) {
-            let thisTeam = paddock[ii];
-            for(let iii=0; iii<thisTeam.drivers.length; iii++) {
-                let thisDriver = thisTeam.drivers[iii];
-                seasonResult.seasonDrivers.push(thisDriver);
-            }
-        }
+        paddock.forEach( (team) => {
+            team.drivers.forEach( (driver) => {
+                seasonResult.seasonDrivers.push(driver);
+            });
+        });
 
         seasonResult.finalResult = calculateSeasonResult(seasonResult, seasonArray);
         seasonArray.push(seasonResult);
@@ -87,53 +85,50 @@ function initialize(seasonsToGenerate, initPaddock) {
 function calculateSeasonResult(seasonResult, seasonArray) {
     let finalResultArray = [];
 
-    for(let i=0; i<seasonResult.seasonDrivers.length; i++) {
-        let thisDriver = seasonResult.seasonDrivers[i];
+    seasonResult.seasonDrivers.forEach(seasonDriverResult => {
         let driverResult = {
-            name: thisDriver.name,
+            name: seasonDriverResult.name,
             pointsTotal: 0,
-            totalAfterCircuit: {},
+            totalAfterCircuit: 0,
             championships: 0,
-            team: seasonResult.seasonDrivers[i].team
+            team: seasonDriverResult.team
         };
 
-        for(let ii=0; ii<seasonResult.result.length; ii++) {
-            let thisCircuitResult = seasonResult.result[ii].result.circuitResult;
+        seasonResult.result.forEach(circuitResult => {
+            circuitResult.result.circuitResult.forEach(driverResultArray => {
+                if (driverResultArray.driver.name == seasonDriverResult.name) driverResult.pointsTotal += driverResultArray.points;
+            });
+        });
 
-            for(let iii=0; iii<thisCircuitResult.length; iii++) {
-                let thisCircuitResultDriver = thisCircuitResult[iii];
-
-                if(thisCircuitResultDriver.driver.name === thisDriver.name) {
-                    driverResult.pointsTotal += thisCircuitResultDriver.points;
-                }
-
-            }
-        }
-
-        finalResultArray.push(driverResult);
-    }
+        finalResultArray.push(driverResult)            
+    });
     
+    //Sorts the final result by points
     finalResultArray.sort(function(a, b) {
         return b.pointsTotal - a.pointsTotal;
     });
 
+    //Create array to hold previous champions
     let champions = [];
-    
+
+    //Push this seasons champion
     if(champions.length === 0) {
         champions.push(finalResultArray[0]);
     }
     
-    for(let i=0; i<seasonArray.length; i++) {
-        champions.push(seasonArray[i].finalResult[0]);
-    }
+    //Go through each season, grab sorted final result, push to champion array
+    seasonArray.forEach(arrayIndex => {
+        champions.push(arrayIndex.finalResult[0]);
+    });
 
-    for(let i=0; i<finalResultArray.length; i++) {
-        for(let ii=0; ii<champions.length; ii++){
-            if(finalResultArray[i].name === champions[ii].name) {
-                finalResultArray[i].championships++;
+    //Find each champion, match their championships to their driver
+    finalResultArray.forEach(result => {
+        champions.forEach(champion => {
+            if(result.name === champion.name) {
+                result.championships++;
             }
-        }
-    }
+        });
+    });
 
     return finalResultArray;
 }

@@ -1,3 +1,5 @@
+import { getRandomNumber } from './getRandomNumber.js';
+
 function createFaculty(facultyToGenerate, teams, seasonNum) {
     console.log('Creating Faculty', facultyToGenerate);
 
@@ -99,10 +101,6 @@ function generateCrew(teamNum, seasonNum) {
         skill: getRandomNumber(1, 10),
         speed: getRandomNumber(1, 10)
     }
-}
-
-function getRandomNumber(min, max) {
-    return Math.round(Math.random() * (max - min) + min);
 }
 
 export { createFaculty };

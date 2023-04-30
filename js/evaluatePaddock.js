@@ -1,10 +1,11 @@
-import { createDrivers } from "./createDrivers.js";
-import { createTeams } from "./createTeams.js";
-import { createFaculty } from "./createFaculty.js";
-import { attemptCEOTeamBuy } from "./attemptCEOTeamBuy.js";
-import { attemptFacultyBuy } from "./attemptFacultyBuy.js";
-import { attemptDriverBuy } from "./attemptDriverBuy.js";
-import { createVehicles } from "./createVehicles.js";
+import { getRandomNumber }      from './getRandomNumber.js';
+import { createDrivers }        from "./createDrivers.js";
+import { createTeams }          from "./createTeams.js";
+import { createFaculty }        from "./createFaculty.js";
+import { attemptCEOTeamBuy }    from "./attemptCEOTeamBuy.js";
+import { attemptFacultyBuy }    from "./attemptFacultyBuy.js";
+import { attemptDriverBuy }     from "./attemptDriverBuy.js";
+import { createVehicles }       from "./createVehicles.js";
 
 function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
     let teams = [];
@@ -14,27 +15,26 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
     let freeDrivers = [];
 
     //Iterate over previous seasons, push champions to array
-    for(let i=0; i<seasonArray.length; i++) {
-        previousChampions.push(seasonArray[i].finalResult[0]);
-    }
+    seasonArray.forEach(arrayItem => {
+        previousChampions.push(arrayItem.finalResult[0])
+    });
    
     //Go through each team/driver on the current paddock
-    for(let i=0; i<paddock.length; i++) {
-        teams.push(paddock[i]);
-        for(let ii=0; ii<teams[i].drivers.length; ii++) {
-            drivers.push(teams[i].drivers[ii]);
-        }
-    }
-
+    paddock.forEach(team => {
+        teams.push(team);
+        team.drivers.forEach(driver => {
+            drivers.push(driver);
+        });
+    });
+    
     //Match previous champions to those in the current paddock
-    for(let i=0; i<previousChampions.length; i++) {
-        for(let ii=0; ii<drivers.length; ii++) {
-            if(previousChampions[i].name === drivers[ii].name) {
-                drivers[ii].championships = previousChampions[i].championships;
-                drivers[ii].cost++;
-            }
+    previousChampions.forEach(champion => {
+        let thisChampion = drivers.find(driver => driver.name === champion.name);
+        if(undefined !== thisChampion) {
+            thisChampion.championships = champion.championships;
+            thisChampion.cost++;
         }
-    }
+    });
 
     //Iterate through all drivers
     for(let i=0; i<drivers.length; i++) {
@@ -230,10 +230,6 @@ function evaluateDriverContract(driver, teams, seasonArray) {
 
 function getFacultyMember(team, member) {
     return team.faculty.filter(thisMember => thisMember.type === member);
-}
-
-function getRandomNumber(min, max) {
-    return Math.round(Math.random() * (max - min) + min);
 }
 
 export { evaluatePaddock }

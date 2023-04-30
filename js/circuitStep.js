@@ -91,8 +91,10 @@ function driverStep(driver, circuit) {
                         (thisPrincipal.skill / thisPrincipal.speed) + 
                         (thisCEO.skill / thisPrincipal.speed)
             }
-            lapTotal.result.push(thisLap)
+
+            lapTotal.result.push(thisLap);
         }
+
         lapTotal.result.push(lapStep(driver, circuit));
     }
 
@@ -104,14 +106,9 @@ function lapStep(driver, circuit) {
         total: 0
     }
 
-    for(let i=0; i<circuit.path.length; i++) {
-        let thisStep = pathStep(driver, circuit.path[i]);
-        if(thisStep !== Infinity || thisLap !== NaN) {
-            thisLap.total = pathStep(driver, circuit.path[i]);
-        } else {
-            thisLap.total = 0;
-        }
-    }
+    circuit.path.forEach(path => {
+        thisLap.total = pathStep(driver, path);
+    });
 
     return thisLap;
 }
@@ -119,6 +116,7 @@ function lapStep(driver, circuit) {
 function pathStep(driver, path) {
     let returnTotal = 0;
 
+    //Iterates over 'length' of path (Length is created during circuit generation)
     for(let i=0; i<path.length; i++) {
         returnTotal += evaluatePathType(driver, path);
     }
@@ -128,29 +126,12 @@ function pathStep(driver, path) {
 
 function evaluatePathType(driver, path) {
     let returnNum = 0;
-    let thisFaultValue = getRandomNumber(0, 10);
+    
     if(path.type === 'Corner') {
-        if(driver.faultAllowance >= driver.vehicle.faultChance) {
-            returnNum = ((driver.vehicle.cornerSkill / driver.cornerSkill) - path.skill) * driver.vehicle.cornerSpeed;
-        } else {
-            returnNum = ((path.skill - (driver.vehicle.cornerSkill / driver.cornerSkill)) / thisFaultValue) * driver.vehicle.cornerSpeed;
-        }
-
-        if(driver.vehicle.cornerSkill > path.skill && driver.vehicle.cornerSpeed > driver.cornerSkill) {
-            returnNum = Number.MIN_VALUE;
-        }
+        returnNum = getRandomNumber(-100, 100);
 
     } else if(path.type === 'Straight') {
-        if(driver.faultAllowance >= driver.vehicle.faultChance) {
-            returnNum = ((driver.vehicle.straightSkill / driver.straightSkill) - path.skill) * driver.vehicle.straightSpeed;
-        } else {
-            // console.log('STRAIGHT FAULT', driver, path)
-            returnNum = ((path.skill - (driver.vehicle.straightSkill / driver.straightSkill)) / thisFaultValue) * driver.vehicle.straightSpeed;
-        }
-
-        if(driver.vehicle.straightSkill > path.skill && driver.vehicle.straightSpeed > driver.straightSkill) {
-            returnNum = Number.MIN_VALUE;
-        }
+        returnNum = getRandomNumber(-100, 100);
     }
 
     return returnNum;

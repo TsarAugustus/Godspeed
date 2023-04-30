@@ -1,3 +1,5 @@
+import { getRandomNumber } from './getRandomNumber.js';
+
 function createTeams(teamsToGenerate, seasonNum) {
     console.log('Creating Teams', teamsToGenerate);
     
@@ -8,19 +10,12 @@ function createTeams(teamsToGenerate, seasonNum) {
             money: getRandomNumber(0, 10),
             prestige: getRandomNumber(0, 10),
             faculty: [
-                {
-                    type: 'ceo'
-                }, {
-                    type: 'principal'
-                }, {
-                    type: 'strategist'
-                }, {
-                    type: 'mechanic'
-                }, {
-                    type: 'engineer'
-                }, {
-                    type: 'crew'
-                }
+                { type: 'ceo' }, 
+                { type: 'principal' },
+                { type: 'strategist' },
+                { type: 'mechanic' },
+                { type: 'engineer' },
+                { type: 'crew' }
             ],
             drivers: []
         }
@@ -29,10 +24,6 @@ function createTeams(teamsToGenerate, seasonNum) {
     }
 
     return teamArray
-}
-
-function getRandomNumber(min, max) {
-    return Math.round(Math.random() * (max - min) + min);
 }
 
 export { createTeams };

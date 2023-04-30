@@ -1,3 +1,5 @@
+import { getRandomNumber } from './getRandomNumber.js';
+
 let multipliers = {
     1: 10,
     2: 20,
@@ -38,16 +40,16 @@ function createCircuit(circuitsToGenerate) {
 function getLapLength(circuit) {
     let pathLength = 0;
 
-    for(let ii=0; ii<circuit.path.length; ii++) {
-        pathLength += circuit.path[ii].length;
-    }
+    circuit.path.forEach(path => {
+        pathLength += path.length
+    });
 
     return pathLength
 }
 
 function refineCircuitMultiplier(circuit) {
     let pathLength = 0;
-    let pathMultiplier = 0; 
+    let pathMultiplier = 0;
 
     for(let i=0; i<circuit.laps; i++) {
         for(let ii=0; ii<circuit.path.length; ii++) {
@@ -55,11 +57,9 @@ function refineCircuitMultiplier(circuit) {
         }
     }
 
-    for(let i=0; i<Object.keys(multipliers).length; i++) {
-        if(pathLength > multipliers[i+1]) {
-            pathMultiplier = i + 1
-        }
-    }
+    Object.keys(multipliers).forEach(multiplier => {
+        if(pathLength > multipliers[multiplier]) pathMultiplier = multiplier + 1;
+    });
 
     return pathMultiplier;    
 }
@@ -117,10 +117,6 @@ function createStraight() {
     }
 
     return thisStraight;
-}
-
-function getRandomNumber(min, max) {
-    return Math.round(Math.random() * (max - min) + min);
 }
 
 export { createCircuit };
