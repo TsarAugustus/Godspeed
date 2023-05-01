@@ -44,6 +44,12 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
             let retiredDriversElement = document.getElementById('retiredDrivers');
             retiredDriversElement.innerHTML += `${driver.name} - ${driver.championships} - ${driver.seasonRetired}</br>`;
             retiredDrivers.push(driver);
+
+            // paddock.forEach((team, index) => {
+            //     if(team.name === driver.team.name) {
+            //         paddock[index].drivers = paddock[index].drivers.filter(teamDriver => teamDriver.name !== driver.name);
+            //     }
+            // });
         } 
 
         //Evaluate a new driver contract
@@ -57,10 +63,10 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
     });
 
     //Iterate through each team, assign respective drivers to teams, remove free drivers/retires drivers
-    paddock.forEach(team => {
-        team.drivers.forEach(teamDriver => drivers.find(driver => teamDriver.name === driver.name ? teamDriver = driver : ''));
+    paddock.forEach((team, teamIndex) => {
+        team.drivers.forEach((teamDriver, driverIndex) => drivers.find(driver => teamDriver.name === driver.name ? paddock[teamIndex].drivers[driverIndex] = driver : ''));
         freeDrivers.forEach(freeDriver => team.drivers = team.drivers.filter(driver => driver.name !== freeDriver.name));
-        retiredDrivers.forEach(retiredDriver => team.drivers = team.drivers.filter(driver => driver.name !== retiredDriver.name));
+        retiredDrivers.forEach(retiredDriver => paddock[teamIndex].drivers = paddock[teamIndex].drivers.filter(driver => driver.name !== retiredDriver.name));
     });
     
     let driverPoolSize = initPaddock.teams.length * initPaddock.driverLimit;
@@ -155,6 +161,8 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
         thisEngineer.vehicle = newVehicle;
         team.drivers.forEach(driver => driver.vehicle = newVehicle);
     });
+
+    paddock.retiredDrivers = retiredDrivers;
     
     return paddock;
 }

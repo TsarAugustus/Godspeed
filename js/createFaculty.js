@@ -1,7 +1,7 @@
 import { getRandomNumber } from './getRandomNumber.js';
 
 function createFaculty(facultyToGenerate, teams, seasonNum) {
-    console.log('Creating Faculty', facultyToGenerate);
+    // console.log('Creating Faculty', facultyToGenerate);
 
     let facultyArray = [];
     for(let i=0; i<facultyToGenerate; i++) {

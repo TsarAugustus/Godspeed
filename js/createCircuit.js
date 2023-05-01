@@ -9,7 +9,7 @@ let multipliers = {
 }
 
 function createCircuit(circuitsToGenerate) {
-    console.log('Creating Circuits', circuitsToGenerate);
+    // console.log('Creating Circuits', circuitsToGenerate);
     let circuitArray = [];
 
     for(let i=0; i<circuitsToGenerate; i++) {

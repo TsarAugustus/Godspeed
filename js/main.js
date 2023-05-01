@@ -20,7 +20,7 @@ function main() {
     //Generates the area for the game
     createGameArea();
 
-    let circuitsToGenerate  = 7;
+    let circuitsToGenerate  = 20;
     let teamsToGenerate     = 12;
     let driversToGenerate   = 30;
     let facultyToGenerate   = 30;
@@ -62,7 +62,13 @@ function initialize(seasonsToGenerate, initPaddock) {
             name: `Season ${i + 1}`,
             result: generateSeason(paddock, i, initPaddock.circuits),
             finalResult: [],
-            seasonDrivers: []
+            seasonDrivers: [],
+            retiredDrivers: [],
+            freeDrivers: []
+        }
+
+        if(undefined !== paddock.retiredDrivers && paddock.retiredDrivers.length > 0) {
+            seasonResult.retiredDrivers = paddock.retiredDrivers;
         }
 
         paddock.forEach(team => {
@@ -76,8 +82,6 @@ function initialize(seasonsToGenerate, initPaddock) {
 
         seasonArray.push(seasonResult);
     }
-
-    console.log(seasonArray)
 
     return seasonArray;
 }

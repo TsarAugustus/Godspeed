@@ -1,55 +1,77 @@
 * {
     margin: auto;
-    /* max-width: 90%;
-    max-height: 90%; */
-    /* overflow: ;     */
 }
 
 #gameArea {
     display: flex;
     align-items: center;
-    /* border: 1px solid black; */
-    /* height: 100%; */
-    width: 100%;
     flex-direction: column;
-    flex-wrap: nowrap;
+    width: 100%;
+}
+
+.standingsElement {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 50vh;
 }
 
 .season {
     display: flex;
-    /* width: 100%; */
+    flex-direction: column;
+    flex-wrap: wrap;
+    border: 1px solid black;
+}
+
+#circuitElement {
+    width: 99%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.circuitResult {
+    width: 10%;
+}
+
+.teamStandings {
+    width: 50%;
+}
+
+.teamContainer {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.teamStandings h2 {
+    width: 100%;
     text-align: center;
-    flex-wrap: nowrap;
     border-bottom: 1px solid black;
 }
 
 .standings {
-    width: 15vw;
+    width: 50%;
 }
 
-.teamStandings p {
-    height: 4vh;
+.standings h2 {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid black;
 }
 
-.previousChampion {
-    font-weight: bold;
-}
-
-.circuitResult {
-    border: 1px solid black;
-    width: 10vw;
-}
-
-.driverList {
-    /* min-width: 10%; */
+.driverContainer {
+    height: 80%;
     display: flex;
     flex-direction: column;
-    /* width: 10vw; */
+    flex-wrap: wrap;
 }
 
-#info {
-    min-width: 100%;
+.driverContainer p {
     text-align: center;
+    width: 50%;
 }
 
 .FIRST {
@@ -71,4 +93,8 @@
 .POINTS {
     color: green;
     text-decoration: underline;
+}
+
+.previousChampion {
+    font-weight: bolder;
 }

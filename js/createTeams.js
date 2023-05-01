@@ -1,7 +1,7 @@
 import { getRandomNumber } from './getRandomNumber.js';
 
 function createTeams(teamsToGenerate, seasonNum) {
-    console.log('Creating Teams', teamsToGenerate);
+    // console.log('Creating Teams', teamsToGenerate);
     
     let teamArray = [];
     for(let i=0; i<teamsToGenerate; i++) {

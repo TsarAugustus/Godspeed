@@ -46,12 +46,13 @@ function calculateSeasonResult(seasonResult, seasonArray) {
 function calculateTeamStanding(seasonResult, seasonArray) {
     let teamResultArray = [];
     let teamChampions = [];
+    let teamDriverChampions = [];
 
     seasonResult.result.forEach(circuitResult => {
         circuitResult.result.circuitResult.forEach(driverResult => {
             let thisTeamInArray = teamResultArray.find(team => team.name === driverResult.driver.team.name);
 
-            if(undefined === thisTeamInArray) teamResultArray.push({"name": driverResult.driver.team.name, points: driverResult.points, championships: 0})
+            if(undefined === thisTeamInArray) teamResultArray.push({"name": driverResult.driver.team.name, points: driverResult.points, championships: 0, driverChampionships: 0})
             else if(thisTeamInArray) thisTeamInArray.points += driverResult.points
         });
     });
@@ -60,21 +61,19 @@ function calculateTeamStanding(seasonResult, seasonArray) {
         return b.points - a.points;
     }); 
 
-    seasonArray.forEach(season => {
-        teamChampions.push(season.teamResult[0]);
-    });
+    seasonArray.forEach(season => teamChampions.push(season.teamResult[0]));
+
+    teamResultArray.forEach(team => teamChampions.forEach(champion => team.name === champion.name ? team.championships++ : ''));
+
+    seasonArray.forEach(season => teamDriverChampions.push(season.finalResult[0]));
 
     teamResultArray.forEach(team => {
-        teamChampions.forEach(champion => {
-            team.name === champion.name ? team.championships++ : ''
-        })
-    })
+        teamDriverChampions.forEach(driver => {
+            driver.team.name === team.name ?team.driverChampionships++ : ''
+        });
+    });
 
     teamResultArray[0].championships++;
-
-
-    
-    console.log(teamResultArray);
 
     return teamResultArray;
 }

@@ -11,20 +11,47 @@ function createHTMLResult(result) {
         seasonDiv.classList.add('season')
         seasonDiv.innerHTML = `<h1>${thisSeason.name}</h1>`
 
+        let standingsElement = document.createElement('div');
+        standingsElement.classList.add('standingsElement');
+        seasonDiv.appendChild(standingsElement);
+
+        let seasonRetiredDrivers = document.createElement('div');
+        seasonRetiredDrivers.classList.add('seasonRetiredDrivers');
+        
+        for(let ii=0; ii<result[i].retiredDrivers.length; ii++) {
+            let thisRetiredDriverElement = document.createElement('p');
+            thisRetiredDriverElement.innerHTML = `RETIRED-${result[i].retiredDrivers[ii].name}`;
+            seasonRetiredDrivers.appendChild(thisRetiredDriverElement);
+        }
+
+        seasonDiv.appendChild(seasonRetiredDrivers);
+        
+        let circuitElement = document.createElement('div');
+        circuitElement.id = 'circuitElement';
+        seasonDiv.appendChild(circuitElement);
+
         let driverStandingElement = document.createElement('p');
         driverStandingElement.id = `${thisSeason.name} Driver Standing`;
         driverStandingElement.innerHTML = '<h2>Final Driver Standings</h2>';
         driverStandingElement.classList.add('standings');
+
+        let driverContainer = document.createElement('div');
+        driverContainer.classList.add('driverContainer');
+        driverStandingElement.appendChild(driverContainer);
 
         let teamStandingElement = document.createElement('p');
         teamStandingElement.id = `${thisSeason.name} Team Standing`;
         teamStandingElement.innerHTML = '<h2>Final Team Standings</h2>';
         teamStandingElement.classList.add('teamStandings');
 
+        let teamContainer = document.createElement('div');
+        teamContainer.classList.add('teamContainer');
+        teamStandingElement.appendChild(teamContainer);
+
         thisSeason.teamResult.forEach((team, index) => {
             let teamResultElement = document.createElement('p');
-            teamResultElement.innerHTML = `${team.name} - ${team.championships} - ${team.points}`;
-            teamStandingElement.appendChild(teamResultElement);
+            teamResultElement.innerHTML = `${team.name} - WCC${team.championships} - WDC${team.driverChampionships} - ${team.points}`;
+            teamContainer.appendChild(teamResultElement);
 
             if(team.championships > 0) teamResultElement.classList.add('previousChampion');
 
@@ -33,22 +60,22 @@ function createHTMLResult(result) {
             else if(index === 2) teamResultElement.classList.add('THIRD');
         });
 
-        seasonDiv.appendChild(teamStandingElement)
+        standingsElement.appendChild(teamStandingElement)
 
         for(let ii=0; ii<thisSeason.finalResult.length; ii++) {
             let finalResultDriver = thisSeason.finalResult[ii];
             let finalResultDriverElement = document.createElement('p');
-            finalResultDriverElement.innerHTML = `${finalResultDriver.name} - ${finalResultDriver.championships} - ${finalResultDriver.team.name}- ${finalResultDriver.pointsTotal}`;
+            finalResultDriverElement.innerHTML = `${finalResultDriver.name} - ${finalResultDriver.championships} - ${finalResultDriver.team.name} - ${finalResultDriver.pointsTotal}`;
             
             if(finalResultDriver.championships > 0) finalResultDriverElement.classList.add('previousChampion')
             if(ii === 0) finalResultDriverElement.classList.add('FIRST')
             else if(ii === 1) finalResultDriverElement.classList.add('SECOND')
             else if (ii === 2) finalResultDriverElement.classList.add('THIRD')
 
-            driverStandingElement.appendChild(finalResultDriverElement)
+            driverContainer.appendChild(finalResultDriverElement)
         }
 
-        seasonDiv.appendChild(driverStandingElement);
+        standingsElement.appendChild(driverStandingElement);
 
         for(let ii=0; ii<thisSeason.result.length; ii++) {
             let thisCircuit = thisSeason.result[ii];
@@ -73,7 +100,7 @@ function createHTMLResult(result) {
                 circuitResultElement.appendChild(driverResultElement);
             }
 
-            seasonDiv.appendChild(circuitResultElement)
+            circuitElement.appendChild(circuitResultElement)
         }
 
         gameArea.appendChild(seasonDiv)

@@ -1,6 +1,8 @@
 import { getRandomNumber } from './getRandomNumber.js';
 
 function createVehicles(vehiclesToGenerate, faculty, seasonNum) {
+    // console.log('Creating Vehicles', engineerArray.length);
+    
     //Vehicles are to be influenced by the engineers created
     let engineerArray = [];
     let vehicleArray = [];
@@ -10,7 +12,6 @@ function createVehicles(vehiclesToGenerate, faculty, seasonNum) {
         }
     }
     
-    console.log('Creating Vehicles', engineerArray.length);
 
     engineerArray.forEach((engineer, index) => {
         let newVehicle = {

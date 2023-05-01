@@ -1,7 +1,7 @@
 import { getRandomNumber } from './getRandomNumber.js';
 
 function createDrivers(driversToGenerate, seasonNum) {
-    console.log('Creating Drivers', driversToGenerate);
+    // console.log('Creating Drivers', driversToGenerate);
 
     let driverArray = [];
     for(let i=0; i<driversToGenerate; i++) {
