@@ -24,7 +24,12 @@ CEOs will attempt to buy a team, and with their money, build the team from the g
 	- Tracks should have grip levels
 	- Tracks should have weather that affect grip levels
 	- Tracks should be raced at different times of day, to allow more 'faults' to occur
-
+	
+**Systems**
+• Promotion & Relegation
+	- Each Team & Driver should be Promoted or Relegated depending on their placement in the championship
+	- Multiple tiers of championships, or 'feeder' series
+	- Each Team & Driver should have a 'hometown', or local area, where they are placed against drivers & teams from a similar area
 
 ##### Bugs and Issues to resolve:
 • Building the path for the track should be less random and have a level of realism involved
