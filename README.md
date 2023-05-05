@@ -41,3 +41,8 @@ CEOs will attempt to buy a team, and with their money, build the team from the g
 
 • Building the path for the track should be less random and have a level of realism involved
 
+##### Todo
+
+• Give faculty a retirement/contract length, similar to drivers. This way they can be swapped around teams, less domination potentially.
+• Merge the functions where new teams join and attempt to get faculty, with the function noted above
+• Update how drivers behave on circuits. Currently it's a 'rally' for each driver. Drivers should be 'racing' at the same time.
