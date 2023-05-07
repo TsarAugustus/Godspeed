@@ -1,3 +1,5 @@
+'use strict';
+
 function calculateSeasonResult(seasonResult, seasonArray) {
     let finalResultArray = [];
 

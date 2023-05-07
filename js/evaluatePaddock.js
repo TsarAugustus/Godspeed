@@ -1,3 +1,5 @@
+'use strict';
+
 import { getRandomNumber }      from './getRandomNumber.js';
 import { createDrivers }        from "./createDrivers.js";
 import { createTeams }          from "./createTeams.js";
@@ -42,14 +44,8 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
             driver.seasonRetired = currentSeasonNum;
 
             let retiredDriversElement = document.getElementById('retiredDrivers');
-            retiredDriversElement.innerHTML += `${driver.name} - ${driver.championships} - ${driver.seasonRetired}</br>`;
+            retiredDriversElement.innerHTML += `<p>${driver.name} - ${driver.championships} - ${driver.seasonRetired}</br></p>`;
             retiredDrivers.push(driver);
-
-            // paddock.forEach((team, index) => {
-            //     if(team.name === driver.team.name) {
-            //         paddock[index].drivers = paddock[index].drivers.filter(teamDriver => teamDriver.name !== driver.name);
-            //     }
-            // });
         } 
 
         //Evaluate a new driver contract

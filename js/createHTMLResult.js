@@ -1,3 +1,5 @@
+'use strict';
+
 import { pointsTable } from './pointsTable.js';
 
 function createHTMLResult(result) {

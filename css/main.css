@@ -9,6 +9,24 @@
     width: 100%;
 }
 
+#retiredDrivers {
+    height: 25vh;
+    /* overflow-y: scroll; */
+    display: flex;
+    flex-flow: row wrap;
+    justify-self: start;
+}
+
+#retiredDrivers h2 {
+    width: 100%;
+    text-align: center;
+    background-color: cornsilk;
+}
+
+#retiredDrivers>div {
+    border: 1px solid black;
+}
+
 .standingsElement {
     display: flex;
     flex-direction: row;

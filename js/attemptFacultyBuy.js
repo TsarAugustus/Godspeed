@@ -1,3 +1,7 @@
+'use strict';
+
+import { getRandomNumber } from "./getRandomNumber.js";
+
 function attemptFacultyBuy(team, facultyNumber, facultyPool) {
     let memberToReturn = {};
     let memberPool = [];
@@ -11,6 +15,8 @@ function attemptFacultyBuy(team, facultyNumber, facultyPool) {
     memberPool.forEach(member => {
         if(undefined === memberToReturn.name) memberToReturn = member
         else if( member.level > memberToReturn.level) memberToReturn = member
+
+        member.contractLength = getRandomNumber(1, 5);
     });
 
     return memberToReturn;

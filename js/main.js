@@ -1,3 +1,5 @@
+'use strict';
+
 import { createCircuit }    from './createCircuit.js'
 import { createTeams }      from './createTeams.js';
 import { createDrivers }    from './createDrivers.js';
@@ -20,12 +22,12 @@ function main() {
     //Generates the area for the game
     createGameArea();
 
-    let circuitsToGenerate  = 20;
-    let teamsToGenerate     = 12;
+    let circuitsToGenerate  = 22;
+    let teamsToGenerate     = 10;
     let driversToGenerate   = 30;
     let facultyToGenerate   = 30;
     let vehiclesToGenerate  = 1;
-    let seasonsToGenerate   = 10;
+    let seasonsToGenerate   = 73;
     let driverLimit         = 2;
 
     let circuits    = createCircuit(circuitsToGenerate);
@@ -46,6 +48,7 @@ function main() {
 
     let result = initialize(seasonsToGenerate, initPaddock);
     createHTMLResult(result);
+    console.log(result)
 }
 
 function initialize(seasonsToGenerate, initPaddock) {

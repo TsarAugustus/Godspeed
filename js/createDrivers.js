@@ -1,3 +1,5 @@
+'use strict';
+
 import { getRandomNumber } from './getRandomNumber.js';
 
 function createDrivers(driversToGenerate, seasonNum) {
@@ -21,10 +23,9 @@ function createDrivers(driversToGenerate, seasonNum) {
             seasonRetired: 0,
             vehicle: []
         }
-
+        
         newDriver.retirement = getRandomNumber(newDriver.contractLength, getRandomNumber(newDriver.contractLength, 10))
         newDriver.totalSkill = newDriver.cornerSkill + newDriver.straightSkill + newDriver.faultAllowance;
-
         driverArray.push(newDriver);
     }
     

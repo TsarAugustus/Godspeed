@@ -1,3 +1,5 @@
+'use strict';
+
 import { attemptCEOTeamBuy } from "./attemptCEOTeamBuy.js";
 import { attemptDriverBuy } from "./attemptDriverBuy.js";
 import { attemptFacultyBuy } from "./attemptFacultyBuy.js";

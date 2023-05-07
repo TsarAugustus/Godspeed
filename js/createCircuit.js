@@ -1,3 +1,5 @@
+'use strict';
+
 import { getRandomNumber } from './getRandomNumber.js';
 
 let multipliers = {

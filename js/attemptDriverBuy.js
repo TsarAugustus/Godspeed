@@ -1,3 +1,7 @@
+'use strict';
+
+import { getRandomNumber } from "./getRandomNumber.js";
+
 function attemptDriverBuy(team, driverPool, driverLimit) {
     let drivers = [];
 
@@ -14,8 +18,10 @@ function attemptDriverBuy(team, driverPool, driverLimit) {
             })
         }
 
-        if(undefined !== potentialDriver.name)
+        if(undefined !== potentialDriver.name) {
+            potentialDriver.contractLength = getRandomNumber(1, 5);
             drivers.push(potentialDriver);
+        }
     }
 
     return drivers;

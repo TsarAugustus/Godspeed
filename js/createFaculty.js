@@ -1,3 +1,5 @@
+'use strict';
+
 import { getRandomNumber } from './getRandomNumber.js';
 
 function createFaculty(facultyToGenerate, teams, seasonNum) {
@@ -30,7 +32,9 @@ function generateCeo(teamNum, seasonNum) {
         expectation: ceoExpectation,
         type: 'CEO',
         skill: getRandomNumber(1, 10),
-        speed: getRandomNumber(1, 10)
+        speed: getRandomNumber(1, 10),
+        retirement: getRandomNumber(10, 20),
+        contractLength: 0
     }
 }
 
@@ -42,7 +46,9 @@ function generatePrincipal(teamNum, seasonNum) {
         cost: getRandomNumber(1, 10),
         skill: getRandomNumber(1, 10),
         money: getRandomNumber(1, 10),
-        speed: getRandomNumber(1, 10)
+        speed: getRandomNumber(1, 10),
+        retirement: getRandomNumber(10, 20),
+        contractLength: 0
     }
 }
 
@@ -54,7 +60,9 @@ function generateStrategist(teamNum, seasonNum) {
         cost: getRandomNumber(1, 10),
         skill: getRandomNumber(1, 10),
         money: getRandomNumber(1, 10),
-        speed: getRandomNumber(1, 10)
+        speed: getRandomNumber(1, 10),
+        retirement: getRandomNumber(10, 20),
+        contractLength: 0
     }
 }
 
@@ -66,7 +74,9 @@ function generateMechanic(teamNum, seasonNum) {
         cost: getRandomNumber(1, 10),
         skill: getRandomNumber(1, 10),
         money: getRandomNumber(1, 10),
-        speed: getRandomNumber(1, 10)
+        speed: getRandomNumber(1, 10),
+        retirement: getRandomNumber(10, 20),
+        contractLength: 0
     }
 }
 
@@ -85,6 +95,8 @@ function generateEngineer(teamNum, seasonNum) {
         money: getRandomNumber(1, 10),
         skill: getRandomNumber(1, 10),
         speed: getRandomNumber(1, 10),
+        retirement: getRandomNumber(10, 20),
+        contractLength: 0,
         vehicle: {}
     }
 
@@ -99,7 +111,9 @@ function generateCrew(teamNum, seasonNum) {
         cost: getRandomNumber(1, 10),
         money: getRandomNumber(1, 10),
         skill: getRandomNumber(1, 10),
-        speed: getRandomNumber(1, 10)
+        speed: getRandomNumber(1, 10),
+        retirement: getRandomNumber(10, 20),
+        contractLength: 0
     }
 }
 

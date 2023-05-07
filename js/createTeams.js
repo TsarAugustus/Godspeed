@@ -1,3 +1,5 @@
+'use strict';
+
 import { getRandomNumber } from './getRandomNumber.js';
 
 function createTeams(teamsToGenerate, seasonNum) {

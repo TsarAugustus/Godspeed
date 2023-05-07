@@ -1,3 +1,5 @@
+'use strict';
+
 import { getRandomNumber } from './getRandomNumber.js';
 
 function createVehicles(vehiclesToGenerate, faculty, seasonNum) {
