@@ -2,13 +2,13 @@
 
 import { getRandomNumber } from "./getRandomNumber.js";
 
-function attemptFacultyBuy(team, facultyNumber, facultyPool) {
+function attemptFacultyBuy(team, type, facultyPool) {
     let memberToReturn = {};
     let memberPool = [];
 
-    facultyPool.forEach(faculty => {
-        if(faculty.type.toLowerCase() === team.faculty[facultyNumber].type && team.faculty[0].money >= faculty.cost) {
-            memberPool.push(faculty);
+    facultyPool.forEach(member => {
+        if(member.type.toLowerCase() === type && team.money >= member.cost) {
+            memberPool.push(member);
         }
     });
 

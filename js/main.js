@@ -1,15 +1,16 @@
 'use strict';
 
-import { createCircuit }    from './createCircuit.js'
-import { createTeams }      from './createTeams.js';
-import { createDrivers }    from './createDrivers.js';
-import { createFaculty }    from './createFaculty.js';
-import { createVehicles }   from './createVehicles.js';
-import { assemblePaddock }  from './assemblePaddock.js';
-import { circuitStep } from './circuitStep.js';
-import { createHTMLResult } from './createHTMLResult.js';
-import { evaluatePaddock } from './evaluatePaddock.js';
-import { calculateSeasonResult } from './calculateSeasonResult.js';
+import { createCircuit }            from './createCircuit.js'
+import { createTeams }              from './createTeams.js';
+import { createDrivers }            from './createDrivers.js';
+import { createFaculty }            from './createFaculty.js';
+import { createVehicles }           from './createVehicles.js';
+// import { assemblePaddock }          from './assemblePaddock.js';
+import { circuitStep }              from './circuitStep.js';
+import { createHTMLResult }         from './createHTMLResult.js';
+// import { evaluatePaddock }          from './evaluatePaddock.js';
+import { calculateSeasonResult }    from './calculateSeasonResult.js';
+import { evalPaddock } from './evalPaddock.js';
 
 function main() {
 
@@ -27,7 +28,7 @@ function main() {
     let driversToGenerate   = 30;
     let facultyToGenerate   = 30;
     let vehiclesToGenerate  = 1;
-    let seasonsToGenerate   = 73;
+    let seasonsToGenerate   = 10;
     let driverLimit         = 2;
 
     let circuits    = createCircuit(circuitsToGenerate);
@@ -48,18 +49,15 @@ function main() {
 
     let result = initialize(seasonsToGenerate, initPaddock);
     createHTMLResult(result);
-    console.log(result)
 }
 
 function initialize(seasonsToGenerate, initPaddock) {
-    console.log('Initializing Seasons', seasonsToGenerate);
     let seasonArray = [];
 
     let paddock = [];
     for(let i=0; i<seasonsToGenerate; i++) {
 
-        if(paddock.length === 0) paddock = assemblePaddock(initPaddock)
-        else paddock = evaluatePaddock(paddock, seasonArray, i, initPaddock)
+        paddock = evalPaddock(i, initPaddock, paddock, seasonArray)
 
         let seasonResult = {
             name: `Season ${i + 1}`,
@@ -90,7 +88,6 @@ function initialize(seasonsToGenerate, initPaddock) {
 }
 
 function generateSeason(paddock, seasonNumber, circuits) {
-    // console.log('Generating Season', seasonNumber + 1)
     let seasonResult = [];
 
     for(let i=0; i<circuits.length; i++) {        

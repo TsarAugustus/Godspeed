@@ -6,14 +6,25 @@ function createFaculty(facultyToGenerate, teams, seasonNum) {
     // console.log('Creating Faculty', facultyToGenerate);
 
     let facultyArray = [];
+    let typesToGenerate = [];
+    let keys = Object.keys(teams[0]);
+    let values = Object.values(teams[0]);
+    let thisCount = 0;
+
+    values.forEach((value, index) => {
+        if(undefined !== value.faculty) typesToGenerate.push(keys[index])
+    });
+
     for(let i=0; i<facultyToGenerate; i++) {
-        for(let ii=0; ii<teams[0].faculty.length; ii++) {
-            facultyArray.push(createMember(teams[0].faculty[ii].type, i, seasonNum))
-        }
+        if(thisCount === typesToGenerate.length) thisCount = 0;
+        facultyArray.push(createMember(typesToGenerate[thisCount], i, seasonNum));
+        thisCount++
     }
+    
     return facultyArray;
 }
 
+//TEAMNUM IS WRONG, WORKS FOR NOW, BUT FIX SOON, ITS EZ
 function createMember(memberToGenerate, teamNum, seasonNum) {
     if      (memberToGenerate === 'ceo') return generateCeo(teamNum, seasonNum) 
     else if (memberToGenerate === 'principal') return generatePrincipal(teamNum, seasonNum)
@@ -24,7 +35,7 @@ function createMember(memberToGenerate, teamNum, seasonNum) {
 }
 
 function generateCeo(teamNum, seasonNum) {
-    let ceoMoney = getRandomNumber(1, 10);
+    let ceoMoney = getRandomNumber(10, 20);
     let ceoExpectation = getRandomNumber(1, ceoMoney);
     return {
         name: `CEO ${seasonNum}-${teamNum + 1}`,
@@ -33,8 +44,9 @@ function generateCeo(teamNum, seasonNum) {
         type: 'CEO',
         skill: getRandomNumber(1, 10),
         speed: getRandomNumber(1, 10),
-        retirement: getRandomNumber(10, 20),
-        contractLength: 0
+        retirement: getRandomNumber(1, 5),
+        contractLength: 0,
+        faculty: true
     }
 }
 
@@ -47,8 +59,9 @@ function generatePrincipal(teamNum, seasonNum) {
         skill: getRandomNumber(1, 10),
         money: getRandomNumber(1, 10),
         speed: getRandomNumber(1, 10),
-        retirement: getRandomNumber(10, 20),
-        contractLength: 0
+        retirement: getRandomNumber(1, 5),
+        contractLength: 0,
+        faculty: true
     }
 }
 
@@ -61,8 +74,9 @@ function generateStrategist(teamNum, seasonNum) {
         skill: getRandomNumber(1, 10),
         money: getRandomNumber(1, 10),
         speed: getRandomNumber(1, 10),
-        retirement: getRandomNumber(10, 20),
-        contractLength: 0
+        retirement: getRandomNumber(1, 5),
+        contractLength: 0,
+        faculty: true
     }
 }
 
@@ -75,8 +89,9 @@ function generateMechanic(teamNum, seasonNum) {
         skill: getRandomNumber(1, 10),
         money: getRandomNumber(1, 10),
         speed: getRandomNumber(1, 10),
-        retirement: getRandomNumber(10, 20),
-        contractLength: 0
+        retirement: getRandomNumber(1, 5),
+        contractLength: 0,
+        faculty: true
     }
 }
 
@@ -95,8 +110,9 @@ function generateEngineer(teamNum, seasonNum) {
         money: getRandomNumber(1, 10),
         skill: getRandomNumber(1, 10),
         speed: getRandomNumber(1, 10),
-        retirement: getRandomNumber(10, 20),
+        retirement: getRandomNumber(1, 5),
         contractLength: 0,
+        faculty: true,
         vehicle: {}
     }
 
@@ -112,8 +128,9 @@ function generateCrew(teamNum, seasonNum) {
         money: getRandomNumber(1, 10),
         skill: getRandomNumber(1, 10),
         speed: getRandomNumber(1, 10),
-        retirement: getRandomNumber(10, 20),
-        contractLength: 0
+        retirement: getRandomNumber(1, 5),
+        contractLength: 0,
+        faculty: true
     }
 }
 

@@ -59,10 +59,18 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
     });
 
     //Iterate through each team, assign respective drivers to teams, remove free drivers/retires drivers
+    //Also iterates through faculty
     paddock.forEach((team, teamIndex) => {
         team.drivers.forEach((teamDriver, driverIndex) => drivers.find(driver => teamDriver.name === driver.name ? paddock[teamIndex].drivers[driverIndex] = driver : ''));
         freeDrivers.forEach(freeDriver => team.drivers = team.drivers.filter(driver => driver.name !== freeDriver.name));
         retiredDrivers.forEach(retiredDriver => paddock[teamIndex].drivers = paddock[teamIndex].drivers.filter(driver => driver.name !== retiredDriver.name));
+
+        team.faculty.forEach((member, memberIndex) => {
+            member.contractLength--;
+            member.retirement--;
+
+            if(evaluateFacultyRetirement(team, member, currentSeasonNum)) paddock[teamIndex].faculty[memberIndex] = {} 
+        })
     });
     
     let driverPoolSize = initPaddock.teams.length * initPaddock.driverLimit;
@@ -75,7 +83,7 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
     //Iterate through teams/free drivers, assign driver if the team can afford it
     paddock.forEach(team => {
         freeDrivers.forEach(freeDriver => {
-            if(team.drivers.length <initPaddock.driverLimit && team.money >= freeDriver.cost) {
+            if(team.drivers.length < initPaddock.driverLimit && team.money >= freeDriver.cost) {
                 let teamEngineer = getFacultyMember(team, 'ENGINEER');
                 freeDriver.team = team;
                 freeDriver.contractLength = getRandomNumber(1, 5);
@@ -86,10 +94,41 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
         });
     });
 
+    //Pushes new teams to paddock
+    let newTeams = potentialNewTeams(initPaddock, paddock, currentSeasonNum, freeDrivers);
+    if(newTeams.length > 0) newTeams.forEach(team => paddock.push(team));
+    
+
+    //Go through each team, remove them if they don't have any drivers
+    //TODO: Retain teams in an array, even if they don't have a driver
+    paddock.forEach(team => {
+        team.drivers.length === 0 ? paddock = paddock.filter(paddockTeam => paddockTeam.name !== team.name) : ''
+    });
+    
+    //Create new vehicles each season
+    paddock.forEach(team => {
+        let thisEngineer = getFacultyMember(team, 'ENGINEER');
+        let newVehicle = createVehicles(1, thisEngineer, currentSeasonNum)[0];
+        thisEngineer.vehicle = newVehicle;
+        team.drivers.forEach(driver => driver.vehicle = newVehicle);
+    });
+
+    paddock.retiredDrivers = retiredDrivers;
+    
+    return paddock;
+}
+
+function evaluateFacultyRetirement(team, member, currentSeasonNum) {
+    // console.log(`Member ${member.name} retired from ${team.name} in ${currentSeasonNum}`)
+    return true;
+}
+
+function potentialNewTeams(initPaddock, paddock, currentSeasonNum, freeDrivers) {
     //Pools of new teams/faculty to potentially join the next season
     let newTeamPool = createTeams(initPaddock.teamLimit - paddock.length, currentSeasonNum);
     let newFacultyPool = createFaculty(newTeamPool.length * 2, newTeamPool, currentSeasonNum);
     let potentialNewTeams = []; 
+    let newTeams = [];
 
     //Iterate through new faculty, find the CEO and attempt to buy a team
     newFacultyPool.forEach(member => {
@@ -139,35 +178,22 @@ function evaluatePaddock(paddock, seasonArray, currentSeasonNum, initPaddock) {
         potentialTeam.drivers.length > 0 ? driverEvaluation = true : driverEvaluation = false;
 
         if(facultyEvaluation === potentialTeam.faculty.length && driverEvaluation) {
-            paddock.push(potentialTeam);
+            newTeams.push(potentialTeam);
             potentialNewTeams = potentialNewTeams.filter(team => team.name !== potentialTeam.name)
         }
     });
 
-    //Go through each team, remove them if they don't have any drivers
-    //TODO: Retain teams in an array, even if they don't have a driver
-    paddock.forEach(team => {
-        team.drivers.length === 0 ? paddock = paddock.filter(paddockTeam => paddockTeam.name !== team.name) : ''
-    })
-    
-    //Create new vehicles each season
-    paddock.forEach(team => {
-        let thisEngineer = getFacultyMember(team, 'ENGINEER');
-        let newVehicle = createVehicles(1, thisEngineer, currentSeasonNum)[0];
-        thisEngineer.vehicle = newVehicle;
-        team.drivers.forEach(driver => driver.vehicle = newVehicle);
-    });
-
-    paddock.retiredDrivers = retiredDrivers;
-    
-    return paddock;
+    return newTeams;
 }
 
 //TODO: Work on a better retirement system
 //Evaluates if the driver should retire or not
 function evaluateDriverRetirement(driver, currentSeasonNum) {
-    if(driver.seasonEntered <= currentSeasonNum - 5) return true
-    else return false
+    let retired = false;
+    let driverSeasonsTotal = currentSeasonNum - driver.seasonEntered;
+    if(driverSeasonsTotal * 10 >= getRandomNumber(0, 100) && (currentSeasonNum - driver.seasonEntered) >= 10) retired = true;
+    
+    return retired;
 }
 
 //Evaluates if the driver should renew their contract or not

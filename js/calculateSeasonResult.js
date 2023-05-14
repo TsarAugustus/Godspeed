@@ -26,10 +26,7 @@ function calculateSeasonResult(seasonResult, seasonArray) {
         return b.pointsTotal - a.pointsTotal;
     });
 
-    //Create array to hold previous champions
     let champions = [];
-
-    //Push this seasons champion
     if(champions.length === 0) {
         champions.push(finalResultArray[0]);
     }
@@ -64,9 +61,7 @@ function calculateTeamStanding(seasonResult, seasonArray) {
     }); 
 
     seasonArray.forEach(season => teamChampions.push(season.teamResult[0]));
-
     teamResultArray.forEach(team => teamChampions.forEach(champion => team.name === champion.name ? team.championships++ : ''));
-
     seasonArray.forEach(season => teamDriverChampions.push(season.finalResult[0]));
 
     teamResultArray.forEach(team => {

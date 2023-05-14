@@ -16,31 +16,56 @@ function assemblePaddock(initPaddock) {
     let ceoPool = [];
     let seasonTeams = [];
 
-    //Set up the CEO's and Teams
-    for(let i=0; i<facultyPool.length; i++) {
-        //Go through each CEO, and see if they can buy a team
-        if(facultyPool[i].type === 'CEO') {
-            let ceoAttempt = attemptCEOTeamBuy(teamPool, facultyPool[i]);
-            if(Object.values(ceoAttempt).length > 0) {
-                seasonTeams.push(attemptCEOTeamBuy(teamPool, facultyPool[i]));
-                teamPool = teamPool.filter(function(team) {
-                    return team.name !== ceoAttempt.name
-                });        
-            }
+    facultyPool.forEach(member => {
+        let attempt = attemptCEOTeamBuy(teamPool, member);
+        if(member.type === 'CEO' && attempt) {
+            seasonTeams.push(attempt);
+            teamPool = teamPool.filter(team => team.name !== attempt.name)
         }
-    }
+    });
+
+    //Set up the CEO's and Teams
+    // for(let i=0; i<facultyPool.length; i++) {
+    //     //Go through each CEO, and see if they can buy a team
+    //     if(facultyPool[i].type === 'CEO') {
+    //         let ceoAttempt = attemptCEOTeamBuy(teamPool, facultyPool[i]);
+    //         if(Object.values(ceoAttempt).length > 0) {
+    //             seasonTeams.push(attemptCEOTeamBuy(teamPool, facultyPool[i]));
+    //             teamPool = teamPool.filter(function(team) {
+    //                 return team.name !== ceoAttempt.name
+    //             });        
+    //         }
+    //     }
+    // }
+
+    facultyPool.forEach((member, memberIndex) => {
+        if(member.type === 'ENGINEER') {
+            facultyPool[memberIndex].vehicle = vehiclePool.find(vehicle => vehicle.engineer.name === member.name);
+        }
+    })
 
     //Assign Vehicles to their respective Engineers
     //Bit messy but it works
-    for(let i=0; i<facultyPool.length; i++) {
-        if(facultyPool[i].type === 'ENGINEER') {
-            for(let ii=0; ii<vehiclePool.length; ii++) {
-                if(vehiclePool[ii].engineer.name === facultyPool[i].name) {
-                    facultyPool[i].vehicle = vehiclePool[ii];
-                }
-            }
+    // for(let i=0; i<facultyPool.length; i++) {
+    //     if(facultyPool[i].type === 'ENGINEER') {
+    //         for(let ii=0; ii<vehiclePool.length; ii++) {
+    //             if(vehiclePool[ii].engineer.name === facultyPool[i].name) {
+    //                 facultyPool[i].vehicle = vehiclePool[ii];
+    //             }
+    //         }
+    //     }
+    // }
+
+    seasonTeams.forEach((team, teamIndex) => {
+        let driverAttempt = attemptDriverBuy(team, driverPool, initPaddock.driverLimit);
+        if(team.drivers.length === 0 && driverAttempt) {
+            driverAttempt.forEach(driver => {
+                driver.team = team;
+                seasonTeams[teamIndex].drivers.push(driver);
+                driverPool = driverPool.filter(thisDriver => thisDriver.name !== driver.name);
+            })
         }
-    }
+    })
 
     //Setup Team Faculty/Drivers
     for(let i=0; i<seasonTeams.length; i++) {

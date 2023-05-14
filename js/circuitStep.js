@@ -3,17 +3,15 @@
 import { pointsTable } from "./pointsTable.js";
 
 function circuitStep(teams, circuit) {
-    // console.log('Starting Circuit Step');
-
     let circuitTeamResult = [];
     let circuitResult = [];
+    
     for(let i=0; i<teams.length; i++) {
         let result = teamStep(teams[i], circuit);
 
         let teamResult = {
             team: teams[i],
             drivers: result,
-            // result: result,
             points: 0
         }
         circuitTeamResult.push(teamResult);
@@ -49,7 +47,7 @@ function circuitStep(teams, circuit) {
     }
 }
 
-function teamStep(team, circuit) { //BUG IS HERE
+function teamStep(team, circuit) {
     let teamResult = [];
     for(let i=0; i<team.drivers.length; i++) {
         let driverStepResult = driverStep(team.drivers[i], circuit);
@@ -79,12 +77,12 @@ function driverStep(driver, circuit) {
 
     for(let i=0; i<circuit.laps; i++) {
         if(Math.round(circuit.laps / 2) === i) {
-            let thisEngineer = getFacultyMember(driver.team, 'ENGINEER')[0];
-            let thisCrew = getFacultyMember(driver.team, 'CREW')[0];
-            let thisMechanic = getFacultyMember(driver.team, 'MECHANIC')[0];
-            let thisStrategist = getFacultyMember(driver.team, 'STRATEGIST')[0];
-            let thisPrincipal = getFacultyMember(driver.team, 'PRINCIPAL')[0];
-            let thisCEO = getFacultyMember(driver.team, 'CEO')[0];
+            let thisEngineer = driver.team.engineer;
+            let thisCrew = driver.team.crew;
+            let thisMechanic = driver.team.mechanic;
+            let thisStrategist = driver.team.strategist;
+            let thisPrincipal = driver.team.principal;
+            let thisCEO = driver.team.ceo;
             
             let thisLap = {
                 total: (thisEngineer.skill / thisEngineer.speed) + 

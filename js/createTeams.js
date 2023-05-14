@@ -13,14 +13,12 @@ function createTeams(teamsToGenerate, seasonNum) {
             prestige: getRandomNumber(0, 10),
             points: 0,
             championships: 0,
-            faculty: [
-                { type: 'ceo' }, 
-                { type: 'principal' },
-                { type: 'strategist' },
-                { type: 'mechanic' },
-                { type: 'engineer' },
-                { type: 'crew' }
-            ],
+            ceo: {faculty: true},
+            principal: {faculty: true},
+            strategist: {faculty: true},
+            mechanic: {faculty: true},
+            engineer: {faculty: true},
+            crew: {faculty: true},
             drivers: []
         }
 

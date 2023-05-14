@@ -19,21 +19,15 @@ function evaluateTeam(teamAttempt, ceo, teamInPool) {
     let potentialTeam = {}
 
     if(Object.values(teamAttempt).length === 0 && ceo.money >= teamInPool.money) {
-        // console.log('First Team Offer');
         potentialTeam = teamInPool;
         ceo.contractLength = getRandomNumber(1, 5);
-        potentialTeam.faculty[0] = ceo;
-    } else if(Object.values(teamAttempt).length > 0 && !teamInPool.faculty[0] && ceo.money >= teamInPool.money && teamInPool.prestige > teamAttempt.prestige) {
-        // console.log('Another Team Offer');
+        potentialTeam.ceo = ceo;
+    } else if(Object.values(teamAttempt).length > 0 && !teamInPool.ceo.name && ceo.money >= teamInPool.money && teamInPool.prestige > teamAttempt.prestige) {
         potentialTeam = teamInPool;
         ceo.contractLength = getRandomNumber(1, 5);
-        potentialTeam.faculty[0] = ceo;
-    } else if(ceo.money < teamInPool.money) {
-        // console.log('Team Costs too much')
-    } else {
-        // console.log('not buying team')
+        potentialTeam.ceo = ceo;
     }
-
+    
     return potentialTeam;
 }
 
